@@ -1,0 +1,15 @@
+# 本地私密原始材料：默认不进入版本控制
+content/private/
+
+# 编辑器和操作系统文件
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.tmp
+
+# 临时导出文件
+exports/
+*.bak
+
