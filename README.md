@@ -111,7 +111,9 @@ Personal experience and long-form writing are the project's first validation cas
 ├── content/
 │   ├── inbox/              # 未经整理的思绪 / raw thought dumps
 │   ├── samples/            # 用于验证框架的样本 / validation samples
-│   └── maps/               # 思考地图 / thought maps
+│   ├── maps/               # 思考地图 / thought maps
+│   ├── responses/          # 带时间的观点回应 / time-indexed responses
+│   └── decisions/          # 项目决定时间线 / project decisions
 ├── sources/                 # 外部思想来源 / external sources
 ├── outputs/                # 表达成品 / expression outputs
 └── templates/
@@ -120,7 +122,8 @@ Personal experience and long-form writing are the project's first validation cas
     ├── 思考地图.md
     ├── 转译校准.md
     ├── 长文结构.md
-    └── 外部来源.md
+    ├── 外部来源.md
+    └── 观点回应.md
 ```
 
 ## 开始使用 / Getting started
@@ -145,9 +148,13 @@ These are the thoughts currently tangled together in my mind...
 
 网络文章、书籍、视频等外部思想材料按 [外部来源管理规范](./sources/README.md) 登记、分类和摘要。原作者观点与使用者认同分别记录，避免引用关系失真。
 
+所有“喜欢、认同、采用或不再认同”都进入 [观点回应时间线](./content/responses/README.md)，并保留发生时间。项目不使用最新结论覆盖过去的自己。
+
 See [思考转译协作机制](./思考转译协作机制.md) for the core workflow. Long-form writing is one specialized output mode, documented in [长文写作协作机制](./长文写作协作机制.md).
 
 Web articles, books, videos, and other external material are registered, classified, and summarized according to the [external source protocol](./sources/README.md). An author's claims and a user's endorsement are recorded separately to preserve attribution.
+
+Every reaction—resonance, agreement, adoption, or later disagreement—is recorded in a [time-indexed response history](./content/responses/README.md). The project never overwrites a past self with the latest conclusion.
 
 ## 当前阶段 / Current stage
 
