@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from pathlib import PurePosixPath
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator, model_validator
@@ -90,6 +91,27 @@ class SourceCreate(StrictModel):
         if value is not None:
             require_aware(value)
         return value
+
+    @field_validator("raw_archive_path")
+    @classmethod
+    def archive_path_must_be_a_data_root_key(
+        cls, value: str | None
+    ) -> str | None:
+        if value is None:
+            return None
+
+        normalized = value.replace("\\", "/")
+        path = PurePosixPath(normalized)
+        if (
+            path.is_absolute()
+            or ".." in path.parts
+            or not path.parts
+            or path.parts[0] != "raw"
+        ):
+            raise ValueError(
+                "raw_archive_path must be a relative key below ARRIVE_DATA_DIR/raw"
+            )
+        return path.as_posix()
 
 
 class SourcePropositionRead(StrictModel):

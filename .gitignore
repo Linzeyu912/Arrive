@@ -1,5 +1,29 @@
-# 本地私密原始材料：默认不进入版本控制
-content/private/
+# ARRIVE 运行数据：必须位于仓库外；这些规则只作为最后一道防线
+/content/
+/sources/
+/outputs/
+/data/
+/arrive-data/
+/.arrive-data/
+/backend/data/
+/runtime/
+/instance/
+/uploads/
+/logs/
+/cache/
+/backups/
+/manuscript/
+/exports/
+/attachments/
+/prompts/
+/model-runs/
+/embeddings/
+/backend/instance/
+/backend/uploads/
+/backend/logs/
+/backend/cache/
+/backend/exports/
+/backend/attachments/
 
 # 编辑器和操作系统文件
 .DS_Store
@@ -16,13 +40,29 @@ __pycache__/
 .coverage
 htmlcov/
 .venv/
-backend/data/
 *.db
 *.db-journal
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.log
+*.dump
+*.pem
+*.key
+*.p12
+*.pfx
 dist/
 build/
 *.egg-info/
 
 # 临时导出文件
-exports/
 *.bak
+
+# 本机配置
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example

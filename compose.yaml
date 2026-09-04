@@ -3,10 +3,10 @@ services:
     build:
       context: ./backend
     environment:
-      ARRIVE_DATABASE_URL: sqlite:////data/arrive.db
+      ARRIVE_DATA_DIR: /data
       ARRIVE_DEFAULT_TIMEZONE: Asia/Shanghai
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       - arrive-data:/data
 

@@ -107,15 +107,13 @@ Personal experience and long-form writing are the project's first validation cas
 ├── docs/
 │   ├── 项目愿景.md
 │   ├── 思考转译框架.md
+│   ├── 软件与数据隔离规范.md
+│   ├── 数据目录规范.md
+│   ├── 外部来源管理规范.md
+│   ├── 观点回应时间线规范.md
 │   └── 路线图.md
-├── content/
-│   ├── inbox/              # 未经整理的思绪 / raw thought dumps
-│   ├── samples/            # 用于验证框架的样本 / validation samples
-│   ├── maps/               # 思考地图 / thought maps
-│   ├── responses/          # 带时间的观点回应 / time-indexed responses
-│   └── decisions/          # 项目决定时间线 / project decisions
-├── sources/                 # 外部思想来源 / external sources
-├── outputs/                # 表达成品 / expression outputs
+├── backend/                # API、领域模型与数据库迁移 / backend software
+├── scripts/                # 工程边界检查 / repository safeguards
 └── templates/
     ├── 思绪采集.md
     ├── 表达任务.md
@@ -128,7 +126,7 @@ Personal experience and long-form writing are the project's first validation cas
 
 ## 开始使用 / Getting started
 
-最简单的开始方式，是把一段未经整理的思绪放入 `content/inbox/`，或者直接说：
+先在软件仓库之外建立数据目录，并通过 `ARRIVE_DATA_DIR` 指向它。最简单的开始方式，是把一段未经整理的思绪放入数据根的 `inbox/`，或者直接说：
 
 ```text
 继续收集，不要急着替我总结。
@@ -136,7 +134,7 @@ Personal experience and long-form writing are the project's first validation cas
 我脑中现在有这些互相缠绕的想法……
 ```
 
-Start by placing an unedited thought dump in `content/inbox/`, or simply say:
+Create a data directory outside the software repository and point `ARRIVE_DATA_DIR` to it. Then place an unedited thought dump in its `inbox/` directory, or simply say:
 
 ```text
 Keep collecting. Do not summarize me yet.
@@ -144,17 +142,21 @@ Keep collecting. Do not summarize me yet.
 These are the thoughts currently tangled together in my mind...
 ```
 
+每个新克隆执行一次 `git config core.hooksPath .githooks`，启用提交前的数据边界检查；也可以随时运行 `python scripts/check_data_boundary.py`。CI 会在 push 和 pull request 时重复检查。
+
+For every new clone, run `git config core.hooksPath .githooks` once to enable the pre-commit data-boundary check. You can also run `python scripts/check_data_boundary.py` directly; CI repeats the check on pushes and pull requests.
+
 核心协作流程见 [思考转译协作机制](./思考转译协作机制.md)。长文是其中一种特殊输出模式，见 [长文写作协作机制](./长文写作协作机制.md)。
 
-网络文章、书籍、视频等外部思想材料按 [外部来源管理规范](./sources/README.md) 登记、分类和摘要。原作者观点与使用者认同分别记录，避免引用关系失真。
+网络文章、书籍、视频等外部思想材料按 [外部来源管理规范](./docs/外部来源管理规范.md) 登记、分类和摘要。原作者观点与使用者认同分别记录，避免引用关系失真。
 
-所有“喜欢、认同、采用或不再认同”都进入 [观点回应时间线](./content/responses/README.md)，并保留发生时间。项目不使用最新结论覆盖过去的自己。
+所有“喜欢、认同、采用或不再认同”都进入 [观点回应时间线](./docs/观点回应时间线规范.md)，并保留发生时间。项目不使用最新结论覆盖过去的自己。
 
 See [思考转译协作机制](./思考转译协作机制.md) for the core workflow. Long-form writing is one specialized output mode, documented in [长文写作协作机制](./长文写作协作机制.md).
 
-Web articles, books, videos, and other external material are registered, classified, and summarized according to the [external source protocol](./sources/README.md). An author's claims and a user's endorsement are recorded separately to preserve attribution.
+Web articles, books, videos, and other external material are registered, classified, and summarized according to the [external source protocol](./docs/外部来源管理规范.md). An author's claims and a user's endorsement are recorded separately to preserve attribution.
 
-Every reaction—resonance, agreement, adoption, or later disagreement—is recorded in a [time-indexed response history](./content/responses/README.md). The project never overwrites a past self with the latest conclusion.
+Every reaction—resonance, agreement, adoption, or later disagreement—is recorded in a [time-indexed response history](./docs/观点回应时间线规范.md). The project never overwrites a past self with the latest conclusion.
 
 ## 当前阶段 / Current stage
 
@@ -178,9 +180,9 @@ python -m uvicorn arrive.main:app --reload
 
 ## 隐私 / Privacy
 
-仓库当前按私有项目管理。`content/private/` 已被 Git 忽略，适合存放不应上传的高敏感原始材料。即使仓库是私有的，也不要提交密码、令牌、证件、精确住址或未经同意的第三方敏感信息。
+软件与数据采用物理隔离。GitHub 仓库只保存代码、通用规范、空白模板和完全虚构的测试数据；使用者原话、外部来源记录、分析、时间线、草稿、成品、数据库及其他运行产物统一保存在仓库外的 `ARRIVE_DATA_DIR`。`shareable` 不等于允许提交到 GitHub，发布必须经过独立确认。完整规则见 [软件与数据隔离规范](./docs/软件与数据隔离规范.md)。
 
-The repository is currently private. `content/private/` is excluded from Git and should be used for highly sensitive raw material that must not be uploaded. Never commit credentials, identity documents, precise addresses, or sensitive third-party information without consent.
+Software and user data are physically separated. GitHub contains only code, generic protocols, blank templates, and fully synthetic test fixtures. Raw thoughts, source records, analyses, timelines, drafts, finished personal work, databases, and all other runtime artifacts live in an external `ARRIVE_DATA_DIR`. A `shareable` label never authorizes a Git commit; publication requires a separate explicit decision. See the [software/data separation policy](./docs/软件与数据隔离规范.md).
 
 ## 项目边界 / Boundaries
 

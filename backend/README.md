@@ -19,7 +19,9 @@
 3. 共鸣、认同和采用分别演进，不能相互推断；
 4. 当前立场是截至某一时间的计算结果，不是覆盖历史的字段；
 5. 外部来源命题和个人命题使用不同编号；
-6. 只有明确的 `adopt` 或 `adapt` 操作才能同时建立个人命题。
+6. 只有明确的 `adopt` 或 `adapt` 操作才能同时建立个人命题；
+7. 数据根与软件仓库必须物理分离；
+8. SQLite 文件必须位于数据根内，来源原文只使用数据根相对键。
 
 ## 本地运行
 
@@ -29,11 +31,14 @@ python -m pip install -e ".[dev]"
 python -m uvicorn arrive.main:app --reload
 ```
 
-默认数据库位于 `backend/data/arrive.db`。可以通过环境变量切换：
+默认数据根是软件仓库旁的 `arrive-data/`，默认数据库位于其中的 `database/arrive.db`。本仓库当前会解析为 `D:\arrive-data\database\arrive.db`。也可以显式指定外部数据根：
 
 ```powershell
-$env:ARRIVE_DATABASE_URL = "sqlite:///D:/path/to/arrive.db"
+$env:ARRIVE_DATA_DIR = "D:\arrive-data"
+python -m uvicorn arrive.main:app --reload
 ```
+
+如需设置 `ARRIVE_DATABASE_URL`，SQLite 路径仍必须位于 `ARRIVE_DATA_DIR` 内。数据根等于、包含或位于软件仓库内时，后端会拒绝启动。示例变量见 [`.env.example`](./.env.example)。
 
 启动后访问：
 
@@ -63,3 +68,5 @@ python -m pytest
 | `GET` | `/api/v1/thought-maps/{map_id}` | 查看思考地图 |
 
 架构和后续边界见 [`docs/后端架构.md`](../docs/后端架构.md)。
+
+软件与数据的完整隔离规则见 [软件与数据隔离规范](../docs/软件与数据隔离规范.md)。

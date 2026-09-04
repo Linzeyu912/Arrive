@@ -11,7 +11,7 @@ def post_response(client, **overrides):
         "agreement": "uncertain",
         "adoption": "undecided",
         "confidence": "medium",
-        "original_words": "这句话很打动我，但我还没有完全想清楚。",
+        "original_words": "这个合成示例有启发，但结论仍待确认。",
     }
     payload.update(overrides)
     return client.post("/api/v1/responses", json=payload)
@@ -31,7 +31,7 @@ def test_response_history_is_append_only_and_snapshot_is_axis_aware(client):
         resonance="unspecified",
         agreement="agree",
         supersedes=first.json()["id"],
-        original_words="现在我认同它，但最初的犹豫仍然真实。",
+        original_words="现在接受这个合成判断，但保留最初的犹豫记录。",
     )
     assert second.status_code == 201
 
@@ -77,7 +77,7 @@ def test_adoption_can_create_linked_personal_proposition(client):
         adoption="adapt",
         agreement="mostly_agree",
         creates_personal_proposition_text=(
-            "爱包含可以练习的能力，也包含无法完全控制的感情。"
+            "表达既需要结构，也需要保留尚未解决的复杂性。"
         ),
     )
 

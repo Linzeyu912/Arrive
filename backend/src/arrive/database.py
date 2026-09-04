@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 from collections.abc import Generator
-from pathlib import Path
 
-from sqlalchemy import Engine, event
+from sqlalchemy import Engine, create_engine, event
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
-from sqlalchemy import create_engine
 
-from .config import get_settings
+from .config import get_settings, prepare_data_directory, validate_database_url
 
 
 class Base(DeclarativeBase):
@@ -17,12 +15,13 @@ class Base(DeclarativeBase):
 
 def build_engine(database_url: str) -> Engine:
     url = make_url(database_url)
+    database_path = validate_database_url(database_url)
     connect_args: dict[str, object] = {}
 
     if url.get_backend_name() == "sqlite":
         connect_args["check_same_thread"] = False
-        if url.database and url.database != ":memory:":
-            Path(url.database).parent.mkdir(parents=True, exist_ok=True)
+        if database_path is not None:
+            database_path.parent.mkdir(parents=True, exist_ok=True)
 
     engine = create_engine(database_url, connect_args=connect_args)
 
@@ -37,7 +36,9 @@ def build_engine(database_url: str) -> Engine:
     return engine
 
 
-engine = build_engine(get_settings().database_url)
+settings = get_settings()
+prepare_data_directory(settings.data_dir)
+engine = build_engine(settings.database_url)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
 
 
