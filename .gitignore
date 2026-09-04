@@ -1,6 +1,7 @@
 # ARRIVE 运行数据：必须位于仓库外；这些规则只作为最后一道防线
 /content/
 /sources/
+/mirrors/
 /outputs/
 /data/
 /arrive-data/
@@ -22,6 +23,7 @@
 /backend/uploads/
 /backend/logs/
 /backend/cache/
+/backend/mirrors/
 /backend/exports/
 /backend/attachments/
 
