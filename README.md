@@ -162,6 +162,20 @@ Every reaction—resonance, agreement, adoption, or later disagreement—is reco
 
 ARRIVE is currently at `v0.x`: using the author's real thoughts as its first validation set to discover which clarification and translation methods genuinely reduce distortion.
 
+## 后端 MVP / Backend MVP
+
+仓库已经包含一个可运行的 FastAPI 后端，把素材、来源命题、个人命题、观点回应时间线和思考地图落实为数据库实体与 REST API。
+
+The repository includes a runnable FastAPI backend that turns materials, attributed source propositions, personal propositions, time-indexed responses, and thought maps into persistent entities and REST APIs.
+
+```powershell
+cd backend
+python -m pip install -e ".[dev]"
+python -m uvicorn arrive.main:app --reload
+```
+
+启动后打开 `http://127.0.0.1:8000/docs`。详细说明见 [Backend README](./backend/README.md) 和 [后端架构](./docs/后端架构.md)。
+
 ## 隐私 / Privacy
 
 仓库当前按私有项目管理。`content/private/` 已被 Git 忽略，适合存放不应上传的高敏感原始材料。即使仓库是私有的，也不要提交密码、令牌、证件、精确住址或未经同意的第三方敏感信息。

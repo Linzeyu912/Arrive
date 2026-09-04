@@ -9,7 +9,20 @@ Thumbs.db
 *.swp
 *.tmp
 
+# Python backend
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+backend/data/
+*.db
+*.db-journal
+dist/
+build/
+*.egg-info/
+
 # 临时导出文件
 exports/
 *.bak
-
