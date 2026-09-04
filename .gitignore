@@ -2,6 +2,7 @@
 /content/
 /sources/
 /mirrors/
+/semantics/
 /outputs/
 /data/
 /arrive-data/
@@ -24,6 +25,7 @@
 /backend/logs/
 /backend/cache/
 /backend/mirrors/
+/backend/semantics/
 /backend/exports/
 /backend/attachments/
 

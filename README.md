@@ -11,7 +11,7 @@
 
 我们脑中的想法通常不是完整的句子，而是片段、感受、记忆、矛盾、联想，以及一些自己能够隐约感觉、却暂时说不清楚的东西。当它们需要被表达时，我们很容易把“还没想清楚”误认为“没有想法”，也可能在追求流畅和漂亮的过程中，丢掉真正想说的内容。
 
-**抵达（Arrive）** 是一个帮助人们表达复杂思考的开放框架。它先接住未经整理的思绪，再通过镜像确认、关系梳理、语义校准和接收端验证，把只有本人能够隐约理解的“内在语言”，转化为他人可以理解、而本人仍然认得的表达。
+**抵达（Arrive）** 是一个帮助人们表达复杂思考的开放框架。它先接住未经整理的思绪，再通过镜像确认、按需歧义检查、关键词语义确认、关系梳理和接收端验证，把只有本人能够隐约理解的“内在语言”，转化为他人可以理解、而本人仍然认得的表达。
 
 抵达不替你决定应该想什么，也不把所有人的声音改造成同一种标准语言。它追求的不是文辞漂亮，而是表达忠实；不是快速生成，而是减少思想在传递过程中的失真。
 
@@ -26,6 +26,8 @@
 ```
 
 编码先回答“我究竟想传递什么”。它把私人、零碎的内在表示整理成可确认的结构，并尽可能连接到有来源、被广泛认可的共享解释；表达者自己的特殊含义和不同意见仍会单独保留。解码再回答“怎样让这个具体的人理解”，根据接收者的知识背景、概念习惯和思路选择词汇、顺序、例子与语境。
+
+镜像确认用于校准整段意思；关键词语义确认用于校准会改变命题或关系的关键用词。用户可以确认单一含义、多义、个人定义或明确保留未知，系统不替用户裁定唯一正确解释。
 
 一份表达需要同时通过两项检查：
 
@@ -53,7 +55,7 @@ There are as many inner languages as there are people in the world.
 
 Thought rarely begins as polished sentences. It appears as fragments, feelings, memories, contradictions, associations, and meanings we can sense before we can explain them. When we try to communicate too quickly, we may mistake “not yet articulated” for “having nothing to say.” We may also produce fluent language that no longer carries what we actually meant.
 
-**Arrive** is an open framework for expressing complex thought. It receives unstructured thinking first, then uses mirror confirmation, relationship mapping, semantic calibration, and audience-side verification to translate a private inner language into an expression another person can understand—and its author can still recognize as their own.
+**Arrive** is an open framework for expressing complex thought. It receives unstructured thinking first, then uses mirror confirmation, on-demand ambiguity checks, key-term meaning confirmation, relationship mapping, and audience-side verification to translate a private inner language into an expression another person can understand—and its author can still recognize as their own.
 
 Arrive does not decide what you should think or standardize every person into the same voice. Its priority is not polished prose but faithful expression; not instant generation but reducing distortion as thought moves from one mind to another.
 
@@ -69,6 +71,8 @@ Tangled thoughts → Encoding (current focus) → shared semantic representation
 ```
 
 Encoding first answers, “What does the sender actually mean?” It turns private fragments into a confirmable structure and links concepts to sourced, broadly shared interpretations where possible, while preserving personal meanings and disagreements separately. Decoding then asks, “How can this particular receiver understand it accurately?” and adapts vocabulary, order, examples, and context to the receiver’s knowledge and reasoning path.
+
+Mirror confirmation calibrates the overall message; key-term confirmation calibrates words whose interpretation would change a proposition or relation. A user may confirm one meaning, multiple meanings, a personal definition, or an explicit unknown—the system does not declare one universally correct reading on the user’s behalf.
 
 Every expression is evaluated from both ends:
 
@@ -128,12 +132,13 @@ Personal experience and long-form writing are the project's first validation cas
     ├── 外部来源.md
     ├── 来源快照.md
     ├── 镜像确认.md
+    ├── 关键词语义确认.md
     └── 观点回应.md
 ```
 
 ## 开始使用 / Getting started
 
-先在软件仓库之外建立数据目录，并通过 `ARRIVE_DATA_DIR` 指向它。可以直接输入一段未经整理的想法；也可以导入外部来源后，针对全文或具体句段写下它触发的思考。来源原文与个人批注分开保存，个人素材经过镜像确认后再进入思考地图。当前这部分是人工协作与空白模板流程；来源快照、定位批注和镜像确认 API 属于下一纵向开发切片。
+先在软件仓库之外建立数据目录，并通过 `ARRIVE_DATA_DIR` 指向它。可以直接输入一段未经整理的想法；也可以导入外部来源后，针对全文或具体句段写下它触发的思考。来源原文与个人批注分开保存；个人素材经过镜像确认后可作为证据进入思考地图，依赖关键词的概念与命题还需要完成语义确认。当前这部分是人工协作与空白模板流程；相应 API 属于后续纵向开发切片。
 
 ```text
 继续收集，不要急着替我总结。
@@ -141,7 +146,7 @@ Personal experience and long-form writing are the project's first validation cas
 我脑中现在有这些互相缠绕的想法……
 ```
 
-Create a data directory outside the software repository and point `ARRIVE_DATA_DIR` to it. You can enter an unedited thought directly, or import an external source and annotate the whole work or a specific passage with the thought it triggered. Source content and personal annotations remain separate, and personal material enters a thought map only after mirror confirmation. This is currently a human-guided, template-based workflow; source snapshots, anchored annotations, and mirror-confirmation APIs are the next vertical slice.
+Create a data directory outside the software repository and point `ARRIVE_DATA_DIR` to it. You can enter an unedited thought directly, or import an external source and annotate the whole work or a specific passage with the thought it triggered. Source content and personal annotations remain separate. Mirror-confirmed personal material may enter a thought map as evidence; concepts and propositions that depend on key terms still require meaning confirmation. This is currently a human-guided, template-based workflow, with the corresponding APIs planned as later vertical slices.
 
 ```text
 Keep collecting. Do not summarize me yet.
@@ -167,17 +172,17 @@ Every reaction—resonance, agreement, adoption, or later disagreement—is reco
 
 ## 当前阶段 / Current stage
 
-项目目前处于 `v0.x`，开发重点是编码闭环。当前纵向切片先实现直接输入、来源定位批注、完整时间记录与镜像确认；语义澄清继续讨论，之后再定义稳定的共享语义表示。传递层只先定义契约，接收者解码留待后续开发。
+项目目前处于 `v0.x`，开发重点是编码闭环。当前纵向切片先实现直接输入、来源定位批注、完整时间记录与镜像确认；随后实现已经确认的按需歧义检查与关键词语义确认，再定义稳定的共享语义表示。传递层只先定义契约，接收者解码留待后续开发。
 
-Arrive is currently at `v0.x`, focused on the encoding loop. The next vertical slice covers direct input, source-anchored annotations, complete timestamps, and mirror confirmation. Semantic clarification remains under discussion; stable shared-semantic encoding follows it. Transmission is currently a contract boundary, and receiver-specific decoding comes later.
+Arrive is currently at `v0.x`, focused on the encoding loop. The next vertical slice covers direct input, source-anchored annotations, complete timestamps, and mirror confirmation. The confirmed on-demand ambiguity and key-term semantics slice follows, before stable shared-semantic encoding. Transmission is currently a contract boundary, and receiver-specific decoding comes later.
 
 开发进度、里程碑和后续顺序见 [开发进度与后续规划](./docs/路线图.md)。See the [development roadmap](./docs/路线图.md) for current status and upcoming milestones.
 
 ## 后端 MVP / Backend MVP
 
-仓库已经包含一个可运行的 FastAPI 后端，把素材、来源命题、个人命题、观点回应时间线和思考地图落实为数据库实体与 REST API。这是编码系统的数据基础；编码任务、共享语义锚点和编码版本仍在下一阶段。
+仓库已经包含一个可运行的 FastAPI 后端，把素材、来源命题、个人命题、观点回应时间线和思考地图落实为数据库实体与 REST API。这是编码系统的数据基础；来源快照、定位批注、镜像确认、关键词语义确认和编码版本 API 尚待后续切片实现。
 
-The repository includes a runnable FastAPI backend for materials, attributed source propositions, personal propositions, time-indexed responses, and thought maps. This is the data foundation for encoding; encoding tasks, shared semantic anchors, and encoding revisions are the next milestone.
+The repository includes a runnable FastAPI backend for materials, attributed source propositions, personal propositions, time-indexed responses, and thought maps. This is the data foundation for encoding; source snapshots, anchored annotations, mirror confirmation, key-term semantics, and encoding-revision APIs remain planned work.
 
 ```powershell
 cd backend

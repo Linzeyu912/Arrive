@@ -13,6 +13,7 @@ FORBIDDEN_DIRECTORIES = (
     "content",
     "sources",
     "mirrors",
+    "semantics",
     "outputs",
     "data",
     "arrive-data",
@@ -35,6 +36,7 @@ FORBIDDEN_DIRECTORIES = (
     "backend/logs",
     "backend/cache",
     "backend/mirrors",
+    "backend/semantics",
     "backend/exports",
     "backend/attachments",
 )
@@ -79,10 +81,10 @@ ALLOWED_ROOT_FILES = {
     "长文写作协作机制.md",
 }
 INSTANCE_ID_PATTERN = re.compile(
-    r"^(?:id|source_id|snapshot_id|event_id|mirror_id|revision_id|confirmation_event_id):\s*"
+    r"^(?:id|source_id|snapshot_id|event_id|mirror_id|term_id|revision_id|confirmation_event_id|semantic_event_id):\s*"
     r"(?:M\d{3}|M-\d{8}-\d{3}|P\d{3}|Q\d{3}|A\d{3}|X\d{3}|D\d{3}|"
     r"SRC-\d{4}(?:/V\d{3})?|RSP-\d{8}-\d{3}|MAP-\d{4}|MIR-\d{4}(?:/V\d{3})?|"
-    r"MCF-\d{8}-\d{3})\s*$",
+    r"MCF-\d{8}-\d{3}|TERM-\d{4}(?:/V\d{3})?|SCF-\d{8}-\d{3})\s*$",
     flags=re.MULTILINE,
 )
 
