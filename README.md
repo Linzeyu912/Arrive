@@ -112,13 +112,15 @@ Personal experience and long-form writing are the project's first validation cas
 │   ├── inbox/              # 未经整理的思绪 / raw thought dumps
 │   ├── samples/            # 用于验证框架的样本 / validation samples
 │   └── maps/               # 思考地图 / thought maps
+├── sources/                 # 外部思想来源 / external sources
 ├── outputs/                # 表达成品 / expression outputs
 └── templates/
     ├── 思绪采集.md
     ├── 表达任务.md
     ├── 思考地图.md
     ├── 转译校准.md
-    └── 长文结构.md
+    ├── 长文结构.md
+    └── 外部来源.md
 ```
 
 ## 开始使用 / Getting started
@@ -141,7 +143,11 @@ These are the thoughts currently tangled together in my mind...
 
 核心协作流程见 [思考转译协作机制](./思考转译协作机制.md)。长文是其中一种特殊输出模式，见 [长文写作协作机制](./长文写作协作机制.md)。
 
+网络文章、书籍、视频等外部思想材料按 [外部来源管理规范](./sources/README.md) 登记、分类和摘要。原作者观点与使用者认同分别记录，避免引用关系失真。
+
 See [思考转译协作机制](./思考转译协作机制.md) for the core workflow. Long-form writing is one specialized output mode, documented in [长文写作协作机制](./长文写作协作机制.md).
+
+Web articles, books, videos, and other external material are registered, classified, and summarized according to the [external source protocol](./sources/README.md). An author's claims and a user's endorsement are recorded separately to preserve attribution.
 
 ## 当前阶段 / Current stage
 
