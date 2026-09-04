@@ -9,6 +9,7 @@ from sqlalchemy import (
     CheckConstraint,
     Enum as SqlEnum,
     ForeignKey,
+    Index,
     Integer,
     String,
     Text,
@@ -124,11 +125,16 @@ class ResponseEvent(Base):
     __table_args__ = (
         UniqueConstraint("recorded_date", "daily_ordinal"),
         CheckConstraint("daily_ordinal > 0", name="positive_daily_ordinal"),
+        Index(
+            "ix_response_events_target_effective",
+            "target_id",
+            "effective_at_epoch_ms",
+        ),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     public_id: Mapped[str] = mapped_column(String(40), unique=True, index=True)
-    target_id: Mapped[str] = mapped_column(String(64), index=True)
+    target_id: Mapped[str] = mapped_column(String(64))
     target_type: Mapped[str] = mapped_column(String(30))
     recorded_at: Mapped[str] = mapped_column(String(40))
     recorded_at_epoch_ms: Mapped[int] = mapped_column(BigInteger, index=True)

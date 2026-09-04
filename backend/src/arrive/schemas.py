@@ -4,7 +4,15 @@ from datetime import datetime
 from pathlib import PurePosixPath
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator, model_validator
+from pydantic import (
+    AfterValidator,
+    BaseModel,
+    ConfigDict,
+    Field,
+    HttpUrl,
+    field_validator,
+    model_validator,
+)
 
 from .domain import (
     Adoption,
@@ -26,10 +34,15 @@ from .time_utils import now_in_default_timezone, require_aware
 
 
 NonEmptyText = Annotated[str, Field(min_length=1)]
+AwareDatetime = Annotated[datetime, AfterValidator(require_aware)]
 
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
+
+
+class ReadModel(StrictModel):
+    model_config = ConfigDict(extra="forbid", from_attributes=True)
 
 
 class MaterialCreate(StrictModel):
@@ -37,20 +50,13 @@ class MaterialCreate(StrictModel):
     content: NonEmptyText
     privacy: Privacy = Privacy.PRIVATE
     preserve_verbatim: bool = False
-    recorded_at: datetime = Field(default_factory=now_in_default_timezone)
-    effective_at: datetime | None = None
+    recorded_at: AwareDatetime = Field(default_factory=now_in_default_timezone)
+    effective_at: AwareDatetime | None = None
     context: str | None = None
 
-    @field_validator("recorded_at", "effective_at")
-    @classmethod
-    def timestamps_must_be_aware(cls, value: datetime | None) -> datetime | None:
-        if value is not None:
-            require_aware(value)
-        return value
 
-
-class MaterialRead(StrictModel):
-    id: str
+class MaterialRead(ReadModel):
+    id: str = Field(validation_alias="public_id")
     kind: MaterialKind
     content: str
     privacy: Privacy
@@ -77,20 +83,13 @@ class SourceCreate(StrictModel):
     language: str | None = None
     topics: list[str] = Field(default_factory=list)
     stance: SourceStance = SourceStance.PENDING
-    stance_as_of: datetime | None = None
+    stance_as_of: AwareDatetime | None = None
     content_status: ContentStatus = ContentStatus.REGISTERED
     rights: Rights = Rights.UNKNOWN
     raw_archive_path: str | None = None
     raw_archive_sha256: str | None = Field(default=None, pattern=r"^[A-Fa-f0-9]{64}$")
     raw_archive_bytes: int | None = Field(default=None, ge=0)
     propositions: list[SourcePropositionCreate] = Field(default_factory=list)
-
-    @field_validator("stance_as_of")
-    @classmethod
-    def stance_time_must_be_aware(cls, value: datetime | None) -> datetime | None:
-        if value is not None:
-            require_aware(value)
-        return value
 
     @field_validator("raw_archive_path")
     @classmethod
@@ -114,16 +113,16 @@ class SourceCreate(StrictModel):
         return path.as_posix()
 
 
-class SourcePropositionRead(StrictModel):
-    id: str
+class SourcePropositionRead(ReadModel):
+    id: str = Field(validation_alias="public_id")
     ordinal: int
     text: str
     attribution: PropositionAttribution
     created_at: str
 
 
-class SourceRead(StrictModel):
-    id: str
+class SourceRead(ReadModel):
+    id: str = Field(validation_alias="public_id")
     kind: SourceKind
     platform: str | None
     original_url: str
@@ -151,8 +150,8 @@ class PersonalPropositionCreate(StrictModel):
     privacy: Privacy = Privacy.PRIVATE
 
 
-class PersonalPropositionRead(StrictModel):
-    id: str
+class PersonalPropositionRead(ReadModel):
+    id: str = Field(validation_alias="public_id")
     text: str
     origin_source_proposition_id: str | None
     privacy: Privacy
@@ -161,8 +160,8 @@ class PersonalPropositionRead(StrictModel):
 
 class ResponseEventCreate(StrictModel):
     target_id: NonEmptyText
-    recorded_at: datetime = Field(default_factory=now_in_default_timezone)
-    effective_at: datetime | None = None
+    recorded_at: AwareDatetime = Field(default_factory=now_in_default_timezone)
+    effective_at: AwareDatetime | None = None
     time_precision: TimePrecision = TimePrecision.MINUTE
     resonance: Resonance = Resonance.UNSPECIFIED
     agreement: Agreement = Agreement.UNSPECIFIED
@@ -174,13 +173,6 @@ class ResponseEventCreate(StrictModel):
     supersedes: str | None = None
     creates_personal_proposition_text: str | None = None
     personal_proposition_privacy: Privacy = Privacy.PRIVATE
-
-    @field_validator("recorded_at", "effective_at")
-    @classmethod
-    def response_times_must_be_aware(cls, value: datetime | None) -> datetime | None:
-        if value is not None:
-            require_aware(value)
-        return value
 
     @model_validator(mode="after")
     def adoption_controls_personal_proposition(self) -> ResponseEventCreate:
@@ -194,8 +186,8 @@ class ResponseEventCreate(StrictModel):
         return self
 
 
-class ResponseEventRead(StrictModel):
-    id: str
+class ResponseEventRead(ReadModel):
+    id: str = Field(validation_alias="public_id")
     target_id: str
     target_type: Literal["source_proposition", "personal_proposition"]
     recorded_at: str
@@ -262,8 +254,8 @@ class ThoughtMapCreate(StrictModel):
         return self
 
 
-class ThoughtMapRead(StrictModel):
-    id: str
+class ThoughtMapRead(ReadModel):
+    id: str = Field(validation_alias="public_id")
     title: str
     version: str
     privacy: Privacy

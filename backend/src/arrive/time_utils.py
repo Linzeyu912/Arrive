@@ -15,10 +15,27 @@ def require_aware(value: datetime, field_name: str = "timestamp") -> datetime:
     return value
 
 
+def truncated_to_seconds(value: datetime) -> datetime:
+    return require_aware(value).replace(microsecond=0)
+
+
 def exact_iso(value: datetime) -> str:
-    return require_aware(value).isoformat(timespec="seconds")
+    return truncated_to_seconds(value).isoformat(timespec="seconds")
 
 
 def epoch_ms(value: datetime) -> int:
     aware = require_aware(value)
     return int(aware.astimezone(timezone.utc).timestamp() * 1000)
+
+
+def dual_time(value: datetime) -> tuple[str, int]:
+    """Second-level ISO string and UTC epoch milliseconds for one instant.
+
+    Both stored columns are derived from the same second-truncated datetime so
+    they can never disagree about sub-second precision.
+    """
+    truncated = truncated_to_seconds(value)
+    return (
+        truncated.isoformat(timespec="seconds"),
+        int(truncated.astimezone(timezone.utc).timestamp() * 1000),
+    )

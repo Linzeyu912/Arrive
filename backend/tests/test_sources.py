@@ -1,28 +1,4 @@
-def create_source(client):
-    return client.post(
-        "/api/v1/sources",
-        json={
-            "kind": "web_article",
-            "original_url": "https://example.com/synthetic-source",
-            "title": "合成来源示例",
-            "platform": "示例平台",
-            "language": "zh-CN",
-            "topics": ["表达", "协作"],
-            "stance": "pending",
-            "content_status": "mapped",
-            "rights": "third_party_copyright",
-            "propositions": [
-                {
-                    "text": "表达前应明确接收者。",
-                    "attribution": "collaborator_summary",
-                },
-                {
-                    "text": "复杂性不应被自动消除。",
-                    "attribution": "collaborator_summary",
-                },
-            ],
-        },
-    )
+from .conftest import create_source
 
 
 def test_source_and_propositions_have_stable_distinct_ids(client):

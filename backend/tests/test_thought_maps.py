@@ -34,3 +34,34 @@ def test_thought_map_preserves_contradictions(client):
     thought_map = response.json()
     assert thought_map["id"] == "MAP-0001"
     assert thought_map["edges"][0]["relation"] == "contradicts"
+
+
+def test_thought_map_rejects_unknown_source_material_ids(client):
+    response = client.post(
+        "/api/v1/thought-maps",
+        json={
+            "title": "引用缺失素材的图",
+            "source_material_ids": ["M001"],
+        },
+    )
+
+    assert response.status_code == 422
+
+
+def test_thought_map_accepts_existing_source_material_ids(client):
+    material = client.post(
+        "/api/v1/materials",
+        json={"content": "一段用于思考地图的合成素材。"},
+    )
+    assert material.status_code == 201
+
+    response = client.post(
+        "/api/v1/thought-maps",
+        json={
+            "title": "引用已有素材的图",
+            "source_material_ids": ["M001"],
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["source_material_ids"] == ["M001"]
