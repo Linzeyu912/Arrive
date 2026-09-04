@@ -1,86 +1,162 @@
-# Emotion
+# 抵达 / ARRIVE
 
-一个从真实经历出发，逐步形成“感情分析框架”和自传式长文的长期项目。
+> 让混乱的思考，准确抵达。<br>
+> Help tangled thoughts arrive intact.
 
-这个仓库首先以作者自己的经历与思考作为第一套样本。项目不会把生活机械地套入理论，而是通过持续记录、复盘、比较和写作，逐渐发现哪些分析方法真正有帮助，并把它们沉淀为其他人也能使用的框架。
+[中文](#中文介绍) · [English](#english-introduction)
 
-最终产物不是一份冷冰冰的分析报告，而是一部兼具个人叙事与主题思考的作品：它以人生经历为时间线，也穿插对关系、情绪、选择、自我认识和成长的反思。
+## 中文介绍
 
-## 项目的三层结构
+世界有多少人，就有多少种内在语言。
+
+我们脑中的想法通常不是完整的句子，而是片段、感受、记忆、矛盾、联想，以及一些自己能够隐约感觉、却暂时说不清楚的东西。当它们需要被表达时，我们很容易把“还没想清楚”误认为“没有想法”，也可能在追求流畅和漂亮的过程中，丢掉真正想说的内容。
+
+**抵达（ARRIVE）** 是一个帮助人们表达复杂思考的开放框架。它先接住未经整理的思绪，再通过多轮澄清、关系梳理、语义校准和接收端验证，把只有本人能够隐约理解的“内在语言”，转化为他人可以理解、而本人仍然认得的表达。
+
+抵达不替你决定应该想什么，也不把所有人的声音改造成同一种标准语言。它追求的不是文辞漂亮，而是表达忠实；不是快速生成，而是减少思想在传递过程中的失真。
+
+一句话描述：
+
+> 帮助人们把零碎、混乱、矛盾的内在思考，整理成准确、可理解且仍保留本人声音的表达。
+
+### 它如何工作
 
 ```text
-个人经历与思考
-       ↓
-可复用的感情分析框架
-       ↓
-自传式叙事与主题长文
+混乱思绪 → 忠实采集 → 语义澄清 → 思考建模 → 面向对方转译 → 双向校准 → 表达成品
 ```
 
-三层内容应彼此关联，但不能混为一谈：
+一份表达需要同时通过两项检查：
 
-- **个人素材**忠实保存当时的记忆、感受和语言；
-- **分析框架**从多个样本中寻找可复用的问题和方法；
-- **最终书稿**根据表达需要选择、重组和匿名化素材。
+1. **本人仍然认得**：整理后的内容没有替换、简化或背叛原本的想法；
+2. **对方能够理解**：接收者有机会准确复述表达者真正想传达的内容。
 
-## 仓库结构
+矛盾、犹豫和没有答案的部分不必被强行消除。准确表达复杂性，本身就是一种清晰。
+
+### 它可以产生什么
+
+抵达不限定最终形式。输出可以是：
+
+- 一段重要对话的表达准备；
+- 一封难以写出的信；
+- 一篇文章或观点说明；
+- 一份用于做决定的思考记录；
+- 一段个人经历的准确叙述；
+- 一部长期形成的自传式思想作品。
+
+个人经历和长文是这个项目的第一批验证样本，但不是项目本身。
+
+## English introduction
+
+There are as many inner languages as there are people in the world.
+
+Thought rarely begins as polished sentences. It appears as fragments, feelings, memories, contradictions, associations, and meanings we can sense before we can explain them. When we try to communicate too quickly, we may mistake “not yet articulated” for “having nothing to say.” We may also produce fluent language that no longer carries what we actually meant.
+
+**ARRIVE** is an open framework for expressing complex thought. It receives unstructured thinking first, then uses iterative clarification, relationship mapping, semantic calibration, and audience-side verification to translate a private inner language into an expression another person can understand—and its author can still recognize as their own.
+
+ARRIVE does not decide what you should think or standardize every person into the same voice. Its priority is not polished prose but faithful expression; not instant generation but reducing distortion as thought moves from one mind to another.
+
+In one sentence:
+
+> ARRIVE helps people turn fragmented, tangled, and contradictory thoughts into clear, understandable expression without losing their own voice.
+
+### How it works
+
+```text
+Tangled thoughts → faithful capture → clarification → thought mapping
+                 → audience-aware translation → two-way calibration → expression
+```
+
+Every expression is evaluated from both ends:
+
+1. **Self-recognition**: the author still recognizes the result as what they meant;
+2. **Audience comprehension**: the receiver can accurately restate what the author intended to communicate.
+
+Contradiction, uncertainty, and open questions do not need to be erased. Expressing complexity accurately is itself a form of clarity.
+
+### What it can produce
+
+ARRIVE is output-agnostic. It can help create:
+
+- preparation for an important conversation;
+- a difficult letter or message;
+- an essay or position statement;
+- a structured record for decision-making;
+- a faithful account of personal experience;
+- a long-form autobiographical work of thought.
+
+Personal experience and long-form writing are the project's first validation cases, not its definition.
+
+---
+
+## 核心原则 / Core principles
+
+- **忠实先于漂亮 / Fidelity before polish**
+- **澄清而不替代 / Clarify, do not replace**
+- **保留复杂性 / Preserve complexity**
+- **表达面向真实接收者 / Design for a real audience**
+- **在表达两端校准 / Validate at both ends**
+
+## 仓库结构 / Repository structure
 
 ```text
 .
 ├── README.md
 ├── AGENTS.md
+├── 思考转译协作机制.md
 ├── 长文写作协作机制.md
 ├── docs/
 │   ├── 项目愿景.md
-│   ├── 感情分析框架.md
+│   ├── 思考转译框架.md
 │   └── 路线图.md
 ├── content/
-│   ├── README.md
-│   ├── inbox/
-│   ├── experiences/
-│   ├── reflections/
-│   └── themes/
-├── manuscript/
-│   └── README.md
+│   ├── inbox/              # 未经整理的思绪 / raw thought dumps
+│   ├── samples/            # 用于验证框架的样本 / validation samples
+│   └── maps/               # 思考地图 / thought maps
+├── outputs/                # 表达成品 / expression outputs
 └── templates/
-    ├── 经历记录.md
-    ├── 关系分析.md
-    ├── 主题思考.md
-    └── 章节草稿.md
+    ├── 思绪采集.md
+    ├── 表达任务.md
+    ├── 思考地图.md
+    ├── 转译校准.md
+    └── 长文结构.md
 ```
 
-## 最简单的使用方式
+## 开始使用 / Getting started
 
-1. 把未经整理的念头写入 `content/inbox/`。
-2. 使用“经历记录”模板，把值得保留的事件整理到 `content/experiences/`。
-3. 使用“关系分析”模板，对事件进行复盘；事实、解释和感受应分开记录。
-4. 当某个问题多次出现时，在 `content/themes/` 中形成主题档案。
-5. 把新的洞见写入 `content/reflections/`，同时修订分析框架。
-6. 当素材形成清晰主线后，在 `manuscript/` 中生成章节和完整书稿。
+最简单的开始方式，是把一段未经整理的思绪放入 `content/inbox/`，或者直接说：
 
-全过程遵循 [长文写作协作机制](./长文写作协作机制.md)。
+```text
+继续收集，不要急着替我总结。
 
-## 隐私约定
+我脑中现在有这些互相缠绕的想法……
+```
 
-感情经历经常涉及第三方。每份素材都应标明以下隐私等级之一：
+Start by placing an unedited thought dump in `content/inbox/`, or simply say:
 
-- `private`：仅供作者理解，不得进入公开文本；
-- `anonymized`：经过匿名化后可以用于分析或叙事；
-- `publishable`：作者已经确认可以公开。
+```text
+Keep collecting. Do not summarize me yet.
 
-仓库当前按私有项目设计。即便仓库是私有的，也不要提交密码、访问令牌、身份证件、住址、医疗记录或他人的高敏感个人信息。特别敏感的原始内容可以放在被 Git 忽略的 `content/private/` 中。
+These are the thoughts currently tangled together in my mind...
+```
 
-## 项目边界
+核心协作流程见 [思考转译协作机制](./思考转译协作机制.md)。长文是其中一种特殊输出模式，见 [长文写作协作机制](./长文写作协作机制.md)。
 
-本项目帮助人们观察关系与理解自己，但不替代心理咨询、医疗诊断或法律建议。分析应避免：
+See [思考转译协作机制](./思考转译协作机制.md) for the core workflow. Long-form writing is one specialized output mode, documented in [长文写作协作机制](./长文写作协作机制.md).
 
-- 仅凭单方叙述诊断他人的人格或心理疾病；
-- 把一种解释包装成唯一事实；
-- 用标签代替对具体行为和情境的观察；
-- 为了故事效果牺牲当事人的隐私与基本公平。
+## 当前阶段 / Current stage
 
-## 当前阶段
+项目目前处于 `v0.x`：使用作者自己的真实思绪作为第一套样本，验证哪些澄清和转译方法确实能够减少表达失真。
 
-项目处于 `v0.x`：以作者个人经历为样本，建立素材体系并验证分析框架。
+ARRIVE is currently at `v0.x`: using the author's real thoughts as its first validation set to discover which clarification and translation methods genuinely reduce distortion.
 
-下一步见 [路线图](./docs/路线图.md)。
+## 隐私 / Privacy
 
+仓库当前按私有项目管理。`content/private/` 已被 Git 忽略，适合存放不应上传的高敏感原始材料。即使仓库是私有的，也不要提交密码、令牌、证件、精确住址或未经同意的第三方敏感信息。
+
+The repository is currently private. `content/private/` is excluded from Git and should be used for highly sensitive raw material that must not be uploaded. Never commit credentials, identity documents, precise addresses, or sensitive third-party information without consent.
+
+## 项目边界 / Boundaries
+
+抵达是一套表达与理解框架，不是心理诊断、医疗建议、法律意见或事实裁决工具。它可以帮助一个人更准确地陈述自己的观察和感受，但不能仅凭单方叙述推断他人的内心、意图或人格。
+
+ARRIVE is a framework for expression and understanding—not psychological diagnosis, medical advice, legal advice, or factual adjudication. It can help someone state their own observations and feelings accurately, but it must not infer another person's inner state, intent, or personality from a one-sided account.
