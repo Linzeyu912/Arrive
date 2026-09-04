@@ -22,8 +22,10 @@
 ### 它如何工作
 
 ```text
-混乱思绪 → 忠实采集 → 语义澄清 → 思考建模 → 面向对方转译 → 双向校准 → 表达成品
+混乱思绪 → 编码（当前重点）→ 共享语义表示 → 传递 → 解码（后续开发）→ 接收者理解
 ```
+
+编码先回答“我究竟想传递什么”。它把私人、零碎的内在表示整理成可确认的结构，并尽可能连接到有来源、被广泛认可的共享解释；表达者自己的特殊含义和不同意见仍会单独保留。解码再回答“怎样让这个具体的人理解”，根据接收者的知识背景、概念习惯和思路选择词汇、顺序、例子与语境。
 
 一份表达需要同时通过两项检查：
 
@@ -62,9 +64,11 @@ In one sentence:
 ### How it works
 
 ```text
-Tangled thoughts → faithful capture → clarification → thought mapping
-                 → audience-aware translation → two-way calibration → expression
+Tangled thoughts → Encoding (current focus) → shared semantic representation
+                 → transmission → Decoding (planned) → receiver understanding
 ```
+
+Encoding first answers, “What does the sender actually mean?” It turns private fragments into a confirmable structure and links concepts to sourced, broadly shared interpretations where possible, while preserving personal meanings and disagreements separately. Decoding then asks, “How can this particular receiver understand it accurately?” and adapts vocabulary, order, examples, and context to the receiver’s knowledge and reasoning path.
 
 Every expression is evaluated from both ends:
 
@@ -93,6 +97,7 @@ Personal experience and long-form writing are the project's first validation cas
 - **忠实先于漂亮 / Fidelity before polish**
 - **澄清而不替代 / Clarify, do not replace**
 - **保留复杂性 / Preserve complexity**
+- **共享语义但不伪造共识 / Shared semantics without false consensus**
 - **表达面向真实接收者 / Design for a real audience**
 - **在表达两端校准 / Validate at both ends**
 
@@ -160,15 +165,17 @@ Every reaction—resonance, agreement, adoption, or later disagreement—is reco
 
 ## 当前阶段 / Current stage
 
-项目目前处于 `v0.x`：使用作者自己的真实思绪作为第一套样本，验证哪些澄清和转译方法确实能够减少表达失真。
+项目目前处于 `v0.x`，开发重点是编码闭环：定义稳定的共享语义表示，让表达者能够逐项确认命题、概念、关系、矛盾和不确定性。传递层只先定义契约，接收者解码留待后续开发。
 
-Arrive is currently at `v0.x`: using the author's real thoughts as its first validation set to discover which clarification and translation methods genuinely reduce distortion.
+Arrive is currently at `v0.x`, focused on the encoding loop: defining a stable shared semantic representation in which the author can confirm propositions, concepts, relations, contradictions, and uncertainty. Transmission is currently a contract boundary; receiver-specific decoding comes later.
+
+开发进度、里程碑和后续顺序见 [开发进度与后续规划](./docs/路线图.md)。See the [development roadmap](./docs/路线图.md) for current status and upcoming milestones.
 
 ## 后端 MVP / Backend MVP
 
-仓库已经包含一个可运行的 FastAPI 后端，把素材、来源命题、个人命题、观点回应时间线和思考地图落实为数据库实体与 REST API。
+仓库已经包含一个可运行的 FastAPI 后端，把素材、来源命题、个人命题、观点回应时间线和思考地图落实为数据库实体与 REST API。这是编码系统的数据基础；编码任务、共享语义锚点和编码版本仍在下一阶段。
 
-The repository includes a runnable FastAPI backend that turns materials, attributed source propositions, personal propositions, time-indexed responses, and thought maps into persistent entities and REST APIs.
+The repository includes a runnable FastAPI backend for materials, attributed source propositions, personal propositions, time-indexed responses, and thought maps. This is the data foundation for encoding; encoding tasks, shared semantic anchors, and encoding revisions are the next milestone.
 
 ```powershell
 cd backend
