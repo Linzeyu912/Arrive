@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "arrive-backend"
 version = "0.1.0"
-description = "Backend for the ARRIVE thought-translation framework"
+description = "Backend for the Arrive thought-translation framework"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

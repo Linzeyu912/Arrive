@@ -39,7 +39,7 @@ def test_configured_sqlite_must_be_inside_data_directory(tmp_path):
     data_dir = tmp_path / "data-root"
     database_path = tmp_path / "other" / "arrive.db"
 
-    with pytest.raises(ValueError, match="inside the ARRIVE data directory"):
+    with pytest.raises(ValueError, match="inside the Arrive data directory"):
         Settings(
             data_dir=data_dir,
             database_url=f"sqlite:///{database_path.as_posix()}",
@@ -82,7 +82,7 @@ def test_empty_external_data_directory_is_marked(tmp_path):
 def test_nonempty_unmarked_directory_is_rejected(tmp_path):
     data_dir = tmp_path / "unrelated"
     data_dir.mkdir()
-    (data_dir / "existing.txt").write_text("not ARRIVE data", encoding="utf-8")
+    (data_dir / "existing.txt").write_text("not Arrive data", encoding="utf-8")
 
     with pytest.raises(ValueError, match="non-empty directory without"):
         prepare_data_directory(data_dir)

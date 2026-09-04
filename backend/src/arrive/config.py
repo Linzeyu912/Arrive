@@ -78,20 +78,20 @@ def repository_root() -> Path:
 def prepare_data_directory(data_dir: Path) -> Path:
     resolved = require_outside_repository(
         data_dir,
-        label="ARRIVE data directory",
+        label="Arrive data directory",
     )
     if resolved.exists() and not resolved.is_dir():
-        raise ValueError(f"ARRIVE data directory is not a directory: {resolved}")
+        raise ValueError(f"Arrive data directory is not a directory: {resolved}")
 
     marker = resolved / _DATA_ROOT_MARKER
     if marker.exists():
         if marker.read_text(encoding="utf-8").strip() != _DATA_ROOT_MARKER_VALUE:
-            raise ValueError(f"Invalid ARRIVE data-root marker: {marker}")
+            raise ValueError(f"Invalid Arrive data-root marker: {marker}")
         return resolved
 
     if resolved.exists() and any(resolved.iterdir()):
         raise ValueError(
-            "Refusing to use a non-empty directory without an ARRIVE "
+            "Refusing to use a non-empty directory without an Arrive "
             f"data-root marker: {resolved}"
         )
 
@@ -102,7 +102,7 @@ def prepare_data_directory(data_dir: Path) -> Path:
 
 @dataclass(frozen=True)
 class Settings:
-    app_name: str = "ARRIVE API"
+    app_name: str = "Arrive API"
     api_prefix: str = "/api/v1"
     data_dir: Path = field(
         default_factory=lambda: Path(
@@ -121,7 +121,7 @@ class Settings:
     def __post_init__(self) -> None:
         data_dir = require_outside_repository(
             self.data_dir,
-            label="ARRIVE data directory",
+            label="Arrive data directory",
         )
         database_url = self.database_url or (
             f"sqlite:///{(data_dir / 'database' / 'arrive.db').as_posix()}"
@@ -129,7 +129,7 @@ class Settings:
         database_path = validate_database_url(database_url)
         if database_path is not None and not _is_inside(database_path, data_dir):
             raise ValueError(
-                "SQLite database must be inside the ARRIVE data directory: "
+                "SQLite database must be inside the Arrive data directory: "
                 f"{database_path}"
             )
 

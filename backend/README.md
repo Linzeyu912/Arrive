@@ -1,6 +1,6 @@
-# ARRIVE Backend
+# Arrive Backend
 
-“抵达 / ARRIVE”的首个可运行后端，用于把项目的协作规范变成可验证的数据和 API 行为。
+“抵达 / Arrive”的首个可运行后端，用于把项目的协作规范变成可验证的数据和 API 行为。
 
 ## 当前能力
 

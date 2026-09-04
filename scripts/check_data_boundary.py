@@ -1,4 +1,4 @@
-"""Fail when runtime/user data crosses into the ARRIVE software repository."""
+"""Fail when runtime/user data crosses into the Arrive software repository."""
 
 from __future__ import annotations
 
@@ -219,10 +219,10 @@ def main() -> int:
         and not local_violations
         and not configured_violation
     ):
-        print("ARRIVE data boundary check passed.")
+        print("Arrive data boundary check passed.")
         return 0
 
-    print("ARRIVE data boundary check failed.", file=sys.stderr)
+    print("Arrive data boundary check failed.", file=sys.stderr)
     if tracked_violations:
         print("Tracked runtime/data paths:", file=sys.stderr)
         for path in tracked_violations:
@@ -236,7 +236,7 @@ def main() -> int:
         for path in disguised_databases:
             print(f"  - {path}", file=sys.stderr)
     if instance_records:
-        print("Tracked files that look like ARRIVE instance records:", file=sys.stderr)
+        print("Tracked files that look like Arrive instance records:", file=sys.stderr)
         for path in instance_records:
             print(f"  - {path}", file=sys.stderr)
     if local_violations:

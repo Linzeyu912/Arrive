@@ -1,4 +1,4 @@
-# 抵达 / ARRIVE
+# 抵达 / Arrive
 
 > 让混乱的思考，准确抵达。<br>
 > Help tangled thoughts arrive intact.
@@ -11,7 +11,7 @@
 
 我们脑中的想法通常不是完整的句子，而是片段、感受、记忆、矛盾、联想，以及一些自己能够隐约感觉、却暂时说不清楚的东西。当它们需要被表达时，我们很容易把“还没想清楚”误认为“没有想法”，也可能在追求流畅和漂亮的过程中，丢掉真正想说的内容。
 
-**抵达（ARRIVE）** 是一个帮助人们表达复杂思考的开放框架。它先接住未经整理的思绪，再通过多轮澄清、关系梳理、语义校准和接收端验证，把只有本人能够隐约理解的“内在语言”，转化为他人可以理解、而本人仍然认得的表达。
+**抵达（Arrive）** 是一个帮助人们表达复杂思考的开放框架。它先接住未经整理的思绪，再通过多轮澄清、关系梳理、语义校准和接收端验证，把只有本人能够隐约理解的“内在语言”，转化为他人可以理解、而本人仍然认得的表达。
 
 抵达不替你决定应该想什么，也不把所有人的声音改造成同一种标准语言。它追求的不是文辞漂亮，而是表达忠实；不是快速生成，而是减少思想在传递过程中的失真。
 
@@ -51,13 +51,13 @@ There are as many inner languages as there are people in the world.
 
 Thought rarely begins as polished sentences. It appears as fragments, feelings, memories, contradictions, associations, and meanings we can sense before we can explain them. When we try to communicate too quickly, we may mistake “not yet articulated” for “having nothing to say.” We may also produce fluent language that no longer carries what we actually meant.
 
-**ARRIVE** is an open framework for expressing complex thought. It receives unstructured thinking first, then uses iterative clarification, relationship mapping, semantic calibration, and audience-side verification to translate a private inner language into an expression another person can understand—and its author can still recognize as their own.
+**Arrive** is an open framework for expressing complex thought. It receives unstructured thinking first, then uses iterative clarification, relationship mapping, semantic calibration, and audience-side verification to translate a private inner language into an expression another person can understand—and its author can still recognize as their own.
 
-ARRIVE does not decide what you should think or standardize every person into the same voice. Its priority is not polished prose but faithful expression; not instant generation but reducing distortion as thought moves from one mind to another.
+Arrive does not decide what you should think or standardize every person into the same voice. Its priority is not polished prose but faithful expression; not instant generation but reducing distortion as thought moves from one mind to another.
 
 In one sentence:
 
-> ARRIVE helps people turn fragmented, tangled, and contradictory thoughts into clear, understandable expression without losing their own voice.
+> Arrive helps people turn fragmented, tangled, and contradictory thoughts into clear, understandable expression without losing their own voice.
 
 ### How it works
 
@@ -75,7 +75,7 @@ Contradiction, uncertainty, and open questions do not need to be erased. Express
 
 ### What it can produce
 
-ARRIVE is output-agnostic. It can help create:
+Arrive is output-agnostic. It can help create:
 
 - preparation for an important conversation;
 - a difficult letter or message;
@@ -162,7 +162,7 @@ Every reaction—resonance, agreement, adoption, or later disagreement—is reco
 
 项目目前处于 `v0.x`：使用作者自己的真实思绪作为第一套样本，验证哪些澄清和转译方法确实能够减少表达失真。
 
-ARRIVE is currently at `v0.x`: using the author's real thoughts as its first validation set to discover which clarification and translation methods genuinely reduce distortion.
+Arrive is currently at `v0.x`: using the author's real thoughts as its first validation set to discover which clarification and translation methods genuinely reduce distortion.
 
 ## 后端 MVP / Backend MVP
 
@@ -188,4 +188,4 @@ Software and user data are physically separated. GitHub contains only code, gene
 
 抵达是一套表达与理解框架，不是心理诊断、医疗建议、法律意见或事实裁决工具。它可以帮助一个人更准确地陈述自己的观察和感受，但不能仅凭单方叙述推断他人的内心、意图或人格。
 
-ARRIVE is a framework for expression and understanding—not psychological diagnosis, medical advice, legal advice, or factual adjudication. It can help someone state their own observations and feelings accurately, but it must not infer another person's inner state, intent, or personality from a one-sided account.
+Arrive is a framework for expression and understanding—not psychological diagnosis, medical advice, legal advice, or factual adjudication. It can help someone state their own observations and feelings accurately, but it must not infer another person's inner state, intent, or personality from a one-sided account.

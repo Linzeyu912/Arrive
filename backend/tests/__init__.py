@@ -1,1 +1,1 @@
-"""ARRIVE backend tests."""
+"""Arrive backend tests."""
