@@ -1,6 +1,11 @@
+import os
+import subprocess
+
 import pytest
 
-from arrive.config import Settings, prepare_data_directory, repository_root
+from arrive.config import (
+    DATA_SUBDIRECTORIES, Settings, data_path, prepare_data_directory, repository_root,
+)
 from arrive.database import build_engine
 
 
@@ -86,3 +91,76 @@ def test_nonempty_unmarked_directory_is_rejected(tmp_path):
 
     with pytest.raises(ValueError, match="non-empty directory without"):
         prepare_data_directory(data_dir)
+
+
+def test_default_without_environment_stays_outside_checkout(monkeypatch):
+    monkeypatch.delenv("ARRIVE_DATA_DIR", raising=False)
+    monkeypatch.delenv("ARRIVE_DATABASE_URL", raising=False)
+    settings = Settings()
+    assert settings.data_dir == repository_root().parent / "arrive-data"
+
+
+def test_initialization_creates_all_runtime_locations_and_ignore(tmp_path):
+    root = prepare_data_directory(tmp_path / "private")
+    assert "*" in (root / ".gitignore").read_text().splitlines()
+    assert all((root / name).is_dir() for name in DATA_SUBDIRECTORIES)
+    # Reopening a marked root preserves existing synthetic data.
+    item = data_path(root, "outputs/synthetic.txt")
+    item.write_text("synthetic test output", encoding="utf-8")
+    prepare_data_directory(root)
+    assert item.read_text(encoding="utf-8") == "synthetic test output"
+
+
+def test_database_cannot_be_placed_in_output_directory(tmp_path):
+    root = tmp_path / "private"
+    with pytest.raises(ValueError, match="ARRIVE_DATA_DIR/database"):
+        Settings(data_dir=root, database_url=f"sqlite:///{root.as_posix()}/outputs/db.sqlite")
+
+
+@pytest.mark.parametrize("key", [
+    "../outside", "outputs/../../outside", "/outputs/a", "C:/outputs/a",
+    "C:outputs/a", "outputs/a:stream", "docs/research/a", "",
+])
+def test_unsafe_runtime_keys_are_rejected(tmp_path, key):
+    with pytest.raises(ValueError):
+        data_path(tmp_path / "private", key)
+
+
+@pytest.mark.parametrize("url", [
+    "sqlite:///file:outside.db?uri=true",
+    "sqlite:///file::memory:?cache=shared&uri=true",
+])
+def test_sqlite_uri_paths_are_rejected(tmp_path, url):
+    with pytest.raises(ValueError, match="URI filenames"):
+        Settings(data_dir=tmp_path / "private", database_url=url)
+
+
+def test_data_directory_in_another_git_tree_is_rejected(tmp_path):
+    (tmp_path / ".git").mkdir()
+    with pytest.raises(ValueError, match="Git working tree"):
+        prepare_data_directory(tmp_path / "private")
+
+
+def test_linked_runtime_directory_cannot_escape(tmp_path):
+    root = prepare_data_directory(tmp_path / "private")
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    link = root / "outputs" / "linked"
+    try:
+        link.symlink_to(outside, target_is_directory=True)
+    except OSError:
+        if os.name != "nt":
+            pytest.skip("Creating symlinks requires OS privileges")
+        subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(link), str(outside)],
+            check=True, capture_output=True,
+        )
+    try:
+        with pytest.raises(ValueError, match="escapes"):
+            data_path(root, "outputs/linked/synthetic.txt")
+    finally:
+        if link.is_symlink():
+            link.unlink()
+        else:
+            # Remove the junction itself, never recurse into its target.
+            link.rmdir()

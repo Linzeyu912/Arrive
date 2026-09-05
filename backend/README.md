@@ -21,7 +21,7 @@
 5. 外部来源命题和个人命题使用不同编号；
 6. 只有明确的 `adopt` 或 `adapt` 操作才能同时建立个人命题；
 7. 数据根与软件仓库必须物理分离；
-8. SQLite 文件必须位于数据根内，来源原文只使用数据根相对键。
+8. 应用 SQLite 文件必须位于数据根的 `database/` 中，来源原文只使用数据根相对键。
 
 ## 本地运行
 
@@ -38,7 +38,25 @@ $env:ARRIVE_DATA_DIR = "D:\arrive-data"
 python -m uvicorn arrive.main:app --reload
 ```
 
-如需设置 `ARRIVE_DATABASE_URL`，SQLite 路径仍必须位于 `ARRIVE_DATA_DIR` 内。数据根等于、包含或位于软件仓库内时，后端会拒绝启动。示例变量见 [`.env.example`](./.env.example)。
+如需设置 `ARRIVE_DATABASE_URL`，SQLite 路径仍必须位于 `ARRIVE_DATA_DIR/database/` 内；不支持 SQLite URI 文件名。数据根等于、包含或位于软件仓库内时，后端会拒绝启动。示例变量见 [`.env.example`](./.env.example)。环境变量示例不是自动加载的配置文件；复制为 `.env` 后需显式使用 `--env-file .env`，或直接设置 shell 环境变量。
+
+### 本地个人部署的数据归属
+
+克隆软件不会下载其他人的数据，也不需要单独部署数据库服务器：默认使用本机 SQLite。数据库保存当前已实现的素材、命题、观点回应与思考地图，包含加工后的结构化数据，并非只外置原始输入。
+
+第一次启动会在外部数据根创建标识、忽略全部内容的 `.gitignore`，以及 `database/`、`raw/`、`drafts/`、`outputs/`、`exports/`、`model-runs/` 等分类目录。已有合法数据根只补齐缺少的目录和忽略文件，不覆盖已有内容；非空且没有标识的目录会被拒绝。目录存在不代表对应功能已实现：附件实际落盘、镜像与完整输出流程仍待开发，未来文件访问必须复用 `arrive.config.data_path()` 校验，不能直接拼接到仓库路径。
+
+可在 `backend/` 中查看当前解析的数据目录（不创建数据库）：
+
+```powershell
+python -c "from arrive.config import Settings; print(Settings().data_dir)"
+```
+
+同一父目录下的多个克隆默认共用旁边的 `arrive-data`。需要相互独立时，为各启动环境设置不同的 `ARRIVE_DATA_DIR`。更改环境变量不会迁移旧数据；迁移前停止服务，备份并复制整个数据根（不是只复制一个数据库文件），再切换配置。
+
+Docker Compose 使用独立命名卷挂载到容器 `/data`，不是仓库内目录。停止或重建容器通常保留卷，但 `docker compose down -v` 会删除卷及数据，不要在保留个人数据时使用。备份与恢复应在停止写入后针对完整数据根进行。
+
+默认仅监听本机；当前没有用户认证和数据加密。外置是存储位置隔离，不等于加密或备份，也不会阻止操作系统云同步、人工复制或未来远程 LLM 调用。使用远程数据库或模型服务须另行确认数据流向。
 
 启动后访问：
 

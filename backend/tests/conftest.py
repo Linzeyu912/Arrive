@@ -1,8 +1,16 @@
 from collections.abc import Generator
+import os
+from tempfile import TemporaryDirectory
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session, sessionmaker
+
+# Isolate import-time application initialization too, not only per-test engines.
+# Never honor a developer's personal database settings in the test process.
+_test_data_root = TemporaryDirectory(prefix="arrive-tests-")
+os.environ["ARRIVE_DATA_DIR"] = _test_data_root.name
+os.environ.pop("ARRIVE_DATABASE_URL", None)
 
 from arrive.database import build_engine, create_schema, get_session
 from arrive.main import create_app

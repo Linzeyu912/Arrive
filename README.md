@@ -236,6 +236,8 @@ python -m uvicorn arrive.main:app --reload
 
 ## 隐私 / Privacy
 
+本地个人部署默认将整个数据根放在克隆目录旁的 `arrive-data/`，不只外置数据库：当前结构化加工结果在其中的 SQLite，后续附件、草稿与导出使用同一数据根。启动自动建立数据目录和忽略文件；Docker 使用独立数据卷。不同克隆需要独立数据时，请分别指定 `ARRIVE_DATA_DIR`。目录外置不等于加密或备份，详情见 [本地部署与数据说明](./backend/README.md#本地个人部署的数据归属)。
+
 软件与个人数据采用物理隔离。GitHub 仓库保存代码、项目框架、指导方法、[公共研究依据](./docs/research/README.md)、空白模板和完全虚构的测试数据；用户个人原话、阅读批注、分析、时间线、草稿、成品、真实测试数据与运行数据库统一保存在仓库外的 `ARRIVE_DATA_DIR`。公共文献可以收录链接与原创摘要，全文副本须有再分发许可。个人数据的 `shareable` 不等于允许提交到 GitHub。完整规则见 [软件与数据隔离规范](./docs/软件与数据隔离规范.md)。
 
 The repository includes software, the framework, methods, and [public research references](./docs/research/README.md). Personal inputs, annotations, derived outputs, and real user test data remain outside Git. Third-party full texts are bundled only where redistribution is permitted; otherwise we provide links and original summaries.
