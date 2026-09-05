@@ -19,13 +19,28 @@
 
 > 帮助人们把零碎、混乱、矛盾的内在思考，整理成准确、可理解且仍保留本人声音的表达。
 
+### 理论基础与设计主线
+
+Arrive 以通信中的“编码—传递—解码”过程作为基础设计框架，而不只是借用三个模块名称。人与人交流的形式可以自然、轻松，工具内部仍需要明确：信息从哪里产生、怎样形成表达、经过什么通道，以及接收者怎样重建含义。我们的目标是让底层机制严谨，让使用过程不生硬。
+
+这里需要区分理论的适用范围：[香农的通信理论](https://www.nokia.com/bell-labs/publications-and-media/publications/a-mathematical-theory-of-communication/)研究消息的可靠传输，并不直接解决语义理解。Arrive 借鉴通信过程的结构，再结合[共同理解与沟通校准研究](./docs/research/README.md#ref-0003-grounding-in-communication)，处理个人含义、语境差异和反馈。因此，本项目的语义编码与解码不是对通信工程中信源编码、信道编码算法的直接实现，也不宣称人际沟通与信号传输完全等同。
+
+| 环节 | Arrive 要解决的问题 | 设计约束 |
+| --- | --- | --- |
+| 编码：第一重点 | 怎样把零碎想法组织成忠实、可解释的表达 | 原话留存、镜像确认、关键词语义确认；不替用户决定含义 |
+| 传递：基础保障 | 怎样让已确认内容经过通道后仍完整、可追溯 | 保留版本、来源与语境；内容送达不等于被理解 |
+| 解码：第二重点，后续开发 | 怎样帮助具体接收者准确理解 | 结合自愿提供的背景与理解习惯，不篡改已确认含义 |
+| 反馈：校准机制 | 怎样发现遗漏或误解，并回到相关环节修正 | 表达者确认与接收者复述分别验证；理解不等于赞同 |
+
+歧义、背景差异和遗漏是需要检查的失真来源，但不把情绪、个体差异或不同意见简单当作应被消除的“噪声”。也不把镜像确认等同于已经具备数学保证的纠错编码。
+
 ### 它如何工作
 
 ```text
 混乱思绪 → 编码（当前重点）→ 共享语义表示 → 传递 → 解码（后续开发）→ 接收者理解
 ```
 
-编码先回答“我究竟想传递什么”。它把私人、零碎的内在表示整理成可确认的结构，并尽可能连接到有来源、被广泛认可的共享解释；表达者自己的特殊含义和不同意见仍会单独保留。解码再回答“怎样让这个具体的人理解”，根据接收者的知识背景、概念习惯和思路选择词汇、顺序、例子与语境。
+编码先回答“我究竟想传递什么”：保留个人含义，用可解释的公共语言表达；没有共识的地方明确说明差异。编码是第一重点，解码其次。解码再回答“怎样让这个具体的人理解”，根据接收者的知识背景、概念习惯和思路选择词汇、顺序、例子与语境；后续支持接收者自愿提供画像。
 
 镜像确认用于校准整段意思；关键词语义确认用于校准会改变命题或关系的关键用词。用户可以确认单一含义、多义、个人定义或明确保留未知，系统不替用户裁定唯一正确解释。
 
@@ -35,6 +50,12 @@
 2. **对方能够理解**：接收者有机会准确复述表达者真正想传达的内容。
 
 矛盾、犹豫和没有答案的部分不必被强行消除。准确表达复杂性，本身就是一种清晰。
+
+### 文献怎样服务于产品
+
+公共文献有两项用途：首先指导实际设计，帮助我们判断该解决什么问题、采用什么方法、怎样检验是否有用；其次用于项目介绍与对外传播，让读者能追溯设计依据，而不是只看到功能口号。
+
+每项研究应关联具体设计选择，并说明证据范围与局限。[研究依据目录](./docs/research/README.md)区分理论基础、交互研究与工程标准。我们可以说“设计参考了相关理论与研究”，但不能仅凭引用就声称“Arrive 已被科学验证”。工具自身的有效性还需要通过忠实度、接收者理解和使用负担等实际评估建立；论文作者也不因此为本项目背书。
 
 ### 它可以产生什么
 
@@ -63,6 +84,21 @@ In one sentence:
 
 > Arrive helps people turn fragmented, tangled, and contradictory thoughts into clear, understandable expression without losing their own voice.
 
+### Theoretical foundations and design rationale
+
+Arrive uses encoding, transmission, and decoding as a foundational process model, not merely as names for software modules. Everyday conversation can feel natural while the underlying design remains explicit about where information originates, how it becomes an expression, how it travels, and how a receiver reconstructs its meaning. Rigorous foundations should support a lightweight experience.
+
+[Shannon’s communication theory](https://www.nokia.com/bell-labs/publications-and-media/publications/a-mathematical-theory-of-communication/) addresses reliable message transmission, not semantic understanding itself. Arrive draws on that process structure and complements it with [research on grounding in communication](./docs/research/README.md#ref-0003-grounding-in-communication) to address personal meaning, context, and feedback. Our semantic encoding and decoding are not direct implementations of source or channel coding algorithms, nor a claim that human communication is identical to signal transmission.
+
+| Stage | Product question | Design constraint |
+| --- | --- | --- |
+| Encoding: first priority | How can fragmented thoughts become faithful, explainable expression? | Preserve inputs and confirm interpretations and key meanings with the author |
+| Transmission: foundational support | How can confirmed content travel intact and remain traceable? | Preserve versions, provenance, and context; delivery is not understanding |
+| Decoding: second priority, planned | How can a particular receiver understand accurately? | Use voluntarily provided context without changing confirmed meaning |
+| Feedback: calibration | How can omissions and misunderstandings be identified and repaired? | Check author intent and receiver restatement separately; understanding is not agreement |
+
+Ambiguity, missing context, and omissions are possible sources of distortion. Emotions and differing viewpoints are not simply “noise” to remove, and mirror confirmation is not a mathematically guaranteed error-correcting code.
+
 ### How it works
 
 ```text
@@ -70,7 +106,7 @@ Tangled thoughts → Encoding (current focus) → shared semantic representation
                  → transmission → Decoding (planned) → receiver understanding
 ```
 
-Encoding first answers, “What does the sender actually mean?” It turns private fragments into a confirmable structure and links concepts to sourced, broadly shared interpretations where possible, while preserving personal meanings and disagreements separately. Decoding then asks, “How can this particular receiver understand it accurately?” and adapts vocabulary, order, examples, and context to the receiver’s knowledge and reasoning path.
+Encoding first answers, “What does the sender actually mean?” It preserves personal meaning in explainable public language and makes differences explicit where no consensus exists. Encoding is the first priority, followed by decoding. Decoding asks, “How can this particular receiver understand it accurately?” and adapts vocabulary, order, examples, and context to the receiver’s knowledge and reasoning path. Voluntary receiver-provided profiles are planned for this later stage.
 
 Mirror confirmation calibrates the overall message; key-term confirmation calibrates words whose interpretation would change a proposition or relation. A user may confirm one meaning, multiple meanings, a personal definition, or an explicit unknown—the system does not declare one universally correct reading on the user’s behalf.
 
@@ -80,6 +116,12 @@ Every expression is evaluated from both ends:
 2. **Audience comprehension**: the receiver can accurately restate what the author intended to communicate.
 
 Contradiction, uncertainty, and open questions do not need to be erased. Expressing complexity accurately is itself a form of clarity.
+
+### How research serves the product
+
+Public literature serves two purposes: first, guiding practical decisions about problems, methods, and evaluation; second, making the rationale traceable in project introductions and public communication.
+
+The [research directory](./docs/research/README.md) distinguishes theoretical foundations, interaction studies, and engineering standards, linking them to design choices and limitations. “Informed by research” does not mean “Arrive has been scientifically validated.” Product effectiveness must be established through evaluations of fidelity, receiver understanding, and user effort. Citation does not imply endorsement by the cited authors.
 
 ### What it can produce
 
@@ -194,9 +236,11 @@ python -m uvicorn arrive.main:app --reload
 
 ## 隐私 / Privacy
 
-软件与数据采用物理隔离。GitHub 仓库只保存代码、通用规范、空白模板和完全虚构的测试数据；使用者原话、外部来源记录、分析、时间线、草稿、成品、数据库及其他运行产物统一保存在仓库外的 `ARRIVE_DATA_DIR`。`shareable` 不等于允许提交到 GitHub，发布必须经过独立确认。完整规则见 [软件与数据隔离规范](./docs/软件与数据隔离规范.md)。
+软件与个人数据采用物理隔离。GitHub 仓库保存代码、项目框架、指导方法、[公共研究依据](./docs/research/README.md)、空白模板和完全虚构的测试数据；用户个人原话、阅读批注、分析、时间线、草稿、成品、真实测试数据与运行数据库统一保存在仓库外的 `ARRIVE_DATA_DIR`。公共文献可以收录链接与原创摘要，全文副本须有再分发许可。个人数据的 `shareable` 不等于允许提交到 GitHub。完整规则见 [软件与数据隔离规范](./docs/软件与数据隔离规范.md)。
 
-Software and user data are physically separated. GitHub contains only code, generic protocols, blank templates, and fully synthetic test fixtures. Raw thoughts, source records, analyses, timelines, drafts, finished personal work, databases, and all other runtime artifacts live in an external `ARRIVE_DATA_DIR`. A `shareable` label never authorizes a Git commit; publication requires a separate explicit decision. See the [software/data separation policy](./docs/软件与数据隔离规范.md).
+The repository includes software, the framework, methods, and [public research references](./docs/research/README.md). Personal inputs, annotations, derived outputs, and real user test data remain outside Git. Third-party full texts are bundled only where redistribution is permitted; otherwise we provide links and original summaries.
+
+Software and user data are physically separated. Personal source records, analyses, timelines, drafts, finished personal work, databases, and other runtime artifacts live in an external `ARRIVE_DATA_DIR`. A `shareable` label never authorizes a Git commit; publishing personal content requires a separate explicit decision. See the [software/data separation policy](./docs/软件与数据隔离规范.md).
 
 ## 项目边界 / Boundaries
 
