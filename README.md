@@ -1,5 +1,14 @@
 # 抵达 / Arrive
 
+[![Data boundary](https://github.com/Linzeyu912/Arrive/actions/workflows/data-boundary.yml/badge.svg)](https://github.com/Linzeyu912/Arrive/actions/workflows/data-boundary.yml)
+[![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-6-646cff?logo=vite)](https://vite.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript)](https://www.typescriptlang.org/)
+[![Python](https://img.shields.io/badge/Python-3.12%2B-3776ab?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2-d71f00?logo=sqlalchemy)](https://www.sqlalchemy.org/)
+[![SQLite](https://img.shields.io/badge/SQLite-003b57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+
 > 让混乱的思考，准确抵达。<br>
 > Help tangled thoughts arrive intact.
 
@@ -69,6 +78,23 @@ Arrive 以通信中的“编码—传递—解码”过程作为基础设计框�
 - 一部长期形成的自传式思想作品。
 
 个人经历和长文是这个项目的第一批验证样本，但不是项目本身。
+
+## 技术栈
+
+前端通过 REST API 连接现有 Python 后端，业务规则与持久化由后端负责。
+
+| 层次 | 当前使用 | 用途 |
+| --- | --- | --- |
+| 前端界面 | React 18.3、React Router 6、TypeScript（strict） | 页面、导航与类型检查 |
+| 前端构建与样式 | Vite 6、原生 CSS / CSS 变量、npm | 开发代理、构建、视觉样式与依赖管理 |
+| 后端 API | Python 3.12+、FastAPI、Pydantic 2、Uvicorn | HTTP 接口、输入校验与本地服务 |
+| 数据与迁移 | SQLAlchemy 2、SQLite、Alembic | 持久化与版本化数据库迁移 |
+| 测试 | Pytest、Vitest、Testing Library、Playwright | 后端测试、前端测试与浏览器验收 |
+| 运行与检查 | Docker Compose、GitHub Actions | 可选容器运行、提交后的数据边界检查 |
+
+顶部技术徽章是静态说明，具体依赖范围与锁定版本以 [前端配置](./frontend/package.json)、[前端锁文件](./frontend/package-lock.json) 和 [后端配置](./backend/pyproject.toml) 为准。Data boundary 徽章显示数据边界工作流状态，不代表前后端全部测试已经在 CI 中通过。
+
+安装与运行见 [前端 README](./frontend/README.md) 和 [后端 README](./backend/README.md)；当前能力、已知问题与验证范围见 [开发交接](./docs/开发进度与模型交接.md)。
 
 ## English introduction
 
