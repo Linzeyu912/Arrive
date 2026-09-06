@@ -1,0 +1,7 @@
+# 前端生成物
+node_modules/
+dist/
+coverage/
+test-results/
+playwright-report/
+*.tsbuildinfo

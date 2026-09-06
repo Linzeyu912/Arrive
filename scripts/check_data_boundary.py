@@ -62,6 +62,7 @@ ALLOWED_TOP_LEVEL_DIRECTORIES = {
     ".github",
     "backend",
     "docs",
+    "frontend",
     "scripts",
     "templates",
 }
@@ -95,6 +96,7 @@ def repository_root() -> Path:
         check=True,
         capture_output=True,
         text=True,
+        encoding="utf-8",
     )
     return Path(result.stdout.strip()).resolve()
 
@@ -177,6 +179,17 @@ def is_inside(path: Path, root: Path) -> bool:
     return path == root or root in path.parents
 
 
+def valid_local_data_directory(root: Path) -> bool:
+    data = root / "arrive-data"
+    if data.resolve() != data.absolute():
+        return False
+    result = subprocess.run(
+        ["git", "check-ignore", "-q", "--", "arrive-data/"],
+        cwd=root, capture_output=True,
+    )
+    return result.returncode == 0
+
+
 def main() -> int:
     root = repository_root()
     tracked = tracked_paths(root)
@@ -205,11 +218,16 @@ def main() -> int:
         relative
         for relative in FORBIDDEN_DIRECTORIES
         if (root / relative).exists() or (root / relative).is_symlink()
+        if relative != "arrive-data" or not valid_local_data_directory(root)
     ]
 
     configured_data_dir = os.getenv("ARRIVE_DATA_DIR")
     configured_violation = bool(
         configured_data_dir
+        and not (
+            Path(configured_data_dir).expanduser().absolute() == root / "arrive-data"
+            and valid_local_data_directory(root)
+        )
         and (
             is_inside(Path(configured_data_dir), root)
             or is_inside(root, Path(configured_data_dir))
@@ -255,7 +273,7 @@ def main() -> int:
             file=sys.stderr,
         )
     print(
-        "Move these items to an external ARRIVE_DATA_DIR before committing.",
+        "Keep data in the ignored arrive-data directory or an external ARRIVE_DATA_DIR; never track it.",
         file=sys.stderr,
     )
     return 1

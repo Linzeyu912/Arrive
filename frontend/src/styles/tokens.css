@@ -1,0 +1,40 @@
+/* Arrive 设计变量：暖白、克制、以文字为中心。
+   参考简约方向，但为 Arrive 自有品牌规范，不复制任何第三方标志与字体。 */
+:root {
+  --color-page: #f8f7f3;
+  --color-sidebar: #f0eee8;
+  --color-surface: #ffffff;
+  --color-text: #292823;
+  --color-text-secondary: #68655d;
+  --color-border: #dedad1;
+  --color-border-strong: #b8b2a4;
+  --color-accent: #925c45;
+  --color-accent-hover: #7d4e3a;
+  --color-accent-soft: #f3e9e2;
+  --color-error: #a33b2e;
+  --color-error-soft: #f9ece9;
+  --color-ok: #3d6b4f;
+  --color-ok-soft: #eaf2ec;
+  --color-warn-soft: #f7f0e0;
+
+  --radius-input: 16px;
+  --radius-control: 8px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --font-body:
+    system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+
+  --sidebar-width: 224px;
+  --reading-width: 760px;
+
+  --motion: 150ms ease;
+}
