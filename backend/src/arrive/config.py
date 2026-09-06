@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import subprocess
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path, PurePosixPath, PureWindowsPath
@@ -11,7 +12,7 @@ from sqlalchemy.engine import make_url
 
 _BACKEND_ROOT = Path(__file__).resolve().parents[2]
 _REPOSITORY_ROOT = _BACKEND_ROOT.parent
-_DEFAULT_DATA_DIR = _REPOSITORY_ROOT.parent / "arrive-data"
+_DEFAULT_DATA_DIR = _REPOSITORY_ROOT / "arrive-data"
 _DATA_ROOT_MARKER = ".arrive-data-root"
 _DATA_ROOT_MARKER_VALUE = "ARRIVE_DATA_ROOT_V1"
 DATA_SUBDIRECTORIES = (
@@ -38,11 +39,11 @@ def data_path(data_dir: Path, key: str) -> Path:
         or parts[0] not in DATA_SUBDIRECTORIES
     ):
         raise ValueError("Invalid Arrive data storage key")
-    root = require_outside_repository(data_dir, label="Arrive data directory")
+    root = require_data_boundary(data_dir, label="Arrive data directory")
     target = _resolved(root.joinpath(*parts))
     if not _is_inside(target, root):
         raise ValueError("Data storage key escapes the Arrive data directory")
-    require_outside_repository(target, label="Arrive data file")
+    require_data_boundary(target, label="Arrive data file")
     return target
 
 
@@ -56,18 +57,38 @@ def _is_inside(candidate: Path, container: Path) -> bool:
     return candidate == container or container in candidate.parents
 
 
-def require_outside_repository(
+def require_data_boundary(
     path: Path,
     *,
     label: str,
     repository_root: Path = _REPOSITORY_ROOT,
 ) -> Path:
     resolved = _resolved(path)
+    repository_root = _resolved(repository_root)
+    local_data = repository_root / "arrive-data"
+    lexical = Path(os.path.abspath(path.expanduser()))
+    if lexical == local_data or local_data in lexical.parents:
+        if not _is_inside(resolved, local_data) or local_data.resolve() != local_data:
+            raise ValueError(f"{label} must not escape through a linked data directory")
+    if local_data.resolve() == local_data and _is_inside(resolved, local_data):
+        if (repository_root / ".git").exists():
+            ignored = subprocess.run(
+                ["git", "check-ignore", "-q", "--", "arrive-data/"],
+                cwd=repository_root, capture_output=True,
+            )
+            tracked = subprocess.run(
+                ["git", "ls-files", "-z", "--", "arrive-data"],
+                cwd=repository_root, capture_output=True,
+            )
+            if ignored.returncode != 0 or tracked.returncode != 0 or tracked.stdout:
+                raise ValueError("Arrive data directory must be Git-ignored and untracked")
+        return resolved
     if _is_inside(resolved, repository_root) or _is_inside(
         repository_root, resolved
     ):
         raise ValueError(
-            f"{label} must be physically separate from the software repository: "
+            f"{label} must be physically separate from software paths "
+            f"(use the ignored arrive-data directory or an external root): "
             f"{resolved}"
         )
     return resolved
@@ -98,7 +119,7 @@ def validate_database_url(
 ) -> Path | None:
     database_path = sqlite_database_path(database_url)
     if database_path is not None:
-        require_outside_repository(
+        require_data_boundary(
             database_path,
             label="SQLite database",
             repository_root=repository_root,
@@ -111,7 +132,7 @@ def repository_root() -> Path:
 
 
 def prepare_data_directory(data_dir: Path) -> Path:
-    resolved = require_outside_repository(
+    resolved = require_data_boundary(
         data_dir,
         label="Arrive data directory",
     )
@@ -119,7 +140,11 @@ def prepare_data_directory(data_dir: Path) -> Path:
         raise ValueError(f"Arrive data directory is not a directory: {resolved}")
 
     marker = resolved / _DATA_ROOT_MARKER
-    if any((parent / ".git").exists() for parent in (resolved, *resolved.parents)):
+    if any(
+        (parent / ".git").exists()
+        and not (parent == _REPOSITORY_ROOT and _is_inside(resolved, _DEFAULT_DATA_DIR))
+        for parent in (resolved, *resolved.parents)
+    ):
         raise ValueError("Arrive data directory must not be in a Git working tree")
     if marker.is_symlink():
         raise ValueError("Arrive data-root marker must not be a symbolic link")
@@ -168,7 +193,7 @@ class Settings:
     )
 
     def __post_init__(self) -> None:
-        data_dir = require_outside_repository(
+        data_dir = require_data_boundary(
             self.data_dir,
             label="Arrive data directory",
         )

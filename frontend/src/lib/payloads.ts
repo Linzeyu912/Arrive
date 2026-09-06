@@ -1,6 +1,6 @@
 /**
  * 提交负载构建与本地校验。
- * 规则来源：docs/前端设计与实施指导书.md 第 6 节。
+ * 契约依据：backend/src/arrive/schemas.py、domain.py 与 services.py。
  * - 素材：trim 判断是否空白，但提交原始字符串（保留换行与标点）。
  * - 来源：必须有效 HTTP(S) 链接；空可选字段不发送。
  * - 回应：只有 adopt/adapt 且用户明确勾选并确认文本时，才携带

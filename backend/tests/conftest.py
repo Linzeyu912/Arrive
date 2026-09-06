@@ -12,15 +12,15 @@ _test_data_root = TemporaryDirectory(prefix="arrive-tests-")
 os.environ["ARRIVE_DATA_DIR"] = _test_data_root.name
 os.environ.pop("ARRIVE_DATABASE_URL", None)
 
-from arrive.database import build_engine, create_schema, get_session
+from arrive.database import build_engine, get_session, run_migrations
 from arrive.main import create_app
 
 
 @pytest.fixture
 def client(tmp_path) -> Generator[TestClient, None, None]:
-    database_path = (tmp_path / "test.db").as_posix()
-    test_engine = build_engine(f"sqlite:///{database_path}")
-    create_schema(test_engine)
+    database_url = f"sqlite:///{(tmp_path / 'test.db').as_posix()}"
+    run_migrations(database_url)
+    test_engine = build_engine(database_url)
     testing_session = sessionmaker(
         bind=test_engine, autoflush=False, expire_on_commit=False
     )

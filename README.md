@@ -224,6 +224,10 @@ Arrive is currently at `v0.x`, focused on the encoding loop. The next vertical s
 
 仓库已经包含一个可运行的 FastAPI 后端，把素材、来源命题、个人命题、观点回应时间线和思考地图落实为数据库实体与 REST API。这是编码系统的数据基础；来源快照、定位批注、镜像确认、关键词语义确认和编码版本 API 尚待后续切片实现。
 
+第一期前端已实现记录、素材、来源和观点页面，主要流程已通过真实后端联调；草稿保护仍有待修问题。运行方式、接口对应和验收记录见 [前端 README](./frontend/README.md)。
+
+跨模型接手请先阅读 [开发进度与模型交接](./docs/开发进度与模型交接.md)，其中按前端、后端记录已完成内容、已知问题、验证依据与下一步。
+
 The repository includes a runnable FastAPI backend for materials, attributed source propositions, personal propositions, time-indexed responses, and thought maps. This is the data foundation for encoding; source snapshots, anchored annotations, mirror confirmation, key-term semantics, and encoding-revision APIs remain planned work.
 
 ```powershell
@@ -236,9 +240,9 @@ python -m uvicorn arrive.main:app --reload
 
 ## 隐私 / Privacy
 
-本地个人部署默认将整个数据根放在克隆目录旁的 `arrive-data/`，不只外置数据库：当前结构化加工结果在其中的 SQLite，后续附件、草稿与导出使用同一数据根。启动自动建立数据目录和忽略文件；Docker 使用独立数据卷。不同克隆需要独立数据时，请分别指定 `ARRIVE_DATA_DIR`。目录外置不等于加密或备份，详情见 [本地部署与数据说明](./backend/README.md#本地个人部署的数据归属)。
+本地个人部署默认将整个数据根放在克隆目录内、由 Git 整体忽略的 `arrive-data/`，其中保存全部运行数据：当前结构化加工结果在其中的 SQLite，后续附件、草稿与导出使用同一数据根。启动自动建立数据目录和忽略文件；Docker 使用独立数据卷。不同克隆需要独立数据时，请分别指定 `ARRIVE_DATA_DIR`。目录分开和 Git 忽略不等于加密或备份，详情见 [本地部署与数据说明](./backend/README.md#本地个人部署的数据归属)。
 
-软件与个人数据采用物理隔离。GitHub 仓库保存代码、项目框架、指导方法、[公共研究依据](./docs/research/README.md)、空白模板和完全虚构的测试数据；用户个人原话、阅读批注、分析、时间线、草稿、成品、真实测试数据与运行数据库统一保存在仓库外的 `ARRIVE_DATA_DIR`。公共文献可以收录链接与原创摘要，全文副本须有再分发许可。个人数据的 `shareable` 不等于允许提交到 GitHub。完整规则见 [软件与数据隔离规范](./docs/软件与数据隔离规范.md)。
+软件与个人数据采用目录分离和 Git 跟踪隔离。GitHub 仓库保存代码、项目框架、指导方法、[公共研究依据](./docs/research/README.md)、空白模板和完全虚构的测试数据；用户个人原话、阅读批注、分析、时间线、草稿、成品、真实测试数据与运行数据库统一保存在不进入 Git 的 `ARRIVE_DATA_DIR`。公共文献可以收录链接与原创摘要，全文副本须有再分发许可。个人数据的 `shareable` 不等于允许提交到 GitHub。完整规则见 [软件与数据隔离规范](./docs/软件与数据隔离规范.md)。
 
 The repository includes software, the framework, methods, and [public research references](./docs/research/README.md). Personal inputs, annotations, derived outputs, and real user test data remain outside Git. Third-party full texts are bundled only where redistribution is permitted; otherwise we provide links and original summaries.
 

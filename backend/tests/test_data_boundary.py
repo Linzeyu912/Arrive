@@ -5,6 +5,7 @@ import pytest
 
 from arrive.config import (
     DATA_SUBDIRECTORIES, Settings, data_path, prepare_data_directory, repository_root,
+    require_data_boundary,
 )
 from arrive.database import build_engine
 
@@ -93,11 +94,51 @@ def test_nonempty_unmarked_directory_is_rejected(tmp_path):
         prepare_data_directory(data_dir)
 
 
-def test_default_without_environment_stays_outside_checkout(monkeypatch):
+def test_default_without_environment_uses_ignored_project_data(monkeypatch):
     monkeypatch.delenv("ARRIVE_DATA_DIR", raising=False)
     monkeypatch.delenv("ARRIVE_DATABASE_URL", raising=False)
     settings = Settings()
-    assert settings.data_dir == repository_root().parent / "arrive-data"
+    assert settings.data_dir == repository_root() / "arrive-data"
+
+
+def test_project_data_requires_ignore_and_rejects_force_tracked_files(tmp_path):
+    repo = tmp_path / "synthetic-repository"
+    repo.mkdir()
+    subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
+    data = repo / "arrive-data"
+    with pytest.raises(ValueError, match="Git-ignored and untracked"):
+        require_data_boundary(data, label="test", repository_root=repo)
+    (repo / ".gitignore").write_text("/arrive-data/\n", encoding="utf-8")
+    assert require_data_boundary(data, label="test", repository_root=repo) == data
+    data.mkdir()
+    (data / "synthetic.txt").write_text("Completely fictional test data", encoding="utf-8")
+    subprocess.run(
+        ["git", "add", "-f", "arrive-data/synthetic.txt"],
+        cwd=repo, check=True, capture_output=True,
+    )
+    with pytest.raises(ValueError, match="Git-ignored and untracked"):
+        require_data_boundary(data, label="test", repository_root=repo)
+
+
+def test_boundary_check_allows_ignored_data_but_rejects_tracked_data(tmp_path, monkeypatch):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "boundary_check", repository_root() / "scripts" / "check_data_boundary.py"
+    )
+    checker = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(checker)
+    repo = tmp_path / "synthetic-repository"
+    repo.mkdir()
+    subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
+    (repo / ".gitignore").write_text("/arrive-data/\n", encoding="utf-8")
+    data = repo / "arrive-data"
+    data.mkdir()
+    (data / "synthetic.txt").write_text("Completely fictional test data", encoding="utf-8")
+    monkeypatch.chdir(repo)
+    monkeypatch.setenv("ARRIVE_DATA_DIR", str(data))
+    assert checker.main() == 0
+    subprocess.run(["git", "add", "-f", "arrive-data/synthetic.txt"], check=True, capture_output=True)
+    assert checker.main() == 1
 
 
 def test_initialization_creates_all_runtime_locations_and_ignore(tmp_path):

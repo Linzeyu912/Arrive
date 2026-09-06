@@ -11,7 +11,7 @@ from sqlalchemy.exc import IntegrityError
 from . import __version__
 from .api import router
 from .config import get_settings
-from .database import create_schema
+from .database import run_migrations
 from .errors import ConflictError, InvariantError, NotFoundError
 
 logger = logging.getLogger("arrive")
@@ -23,7 +23,7 @@ def create_app(*, initialize_database: bool = True) -> FastAPI:
     @asynccontextmanager
     async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
         if initialize_database:
-            create_schema()
+            run_migrations()
         yield
 
     app = FastAPI(
