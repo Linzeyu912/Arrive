@@ -8,6 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useBlocker } from 'react-router-dom';
 import { ApiError } from '../../api/client';
+import SavedOverview from './SavedOverview';
 import { createMaterial } from '../../api/endpoints';
 import type { Material, MaterialKind, Privacy } from '../../api/types';
 import {
@@ -304,6 +305,7 @@ export default function RecordPage() {
         </div>
       )}
 
+      <SavedOverview key={receipts.length} />
       {receipts.length > 0 && (
         <>
           <h2>本次已保存</h2>

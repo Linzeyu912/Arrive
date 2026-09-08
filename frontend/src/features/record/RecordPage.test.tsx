@@ -9,6 +9,11 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import RecordPage from './RecordPage';
 
 function renderRecordPage() {
+  const postFetch = globalThis.fetch;
+  vi.stubGlobal('fetch', (url: RequestInfo | URL, init?: RequestInit) =>
+    init?.method === 'GET'
+      ? Promise.resolve(new Response('[]', { headers: { 'Content-Type': 'application/json' } }))
+      : postFetch(url, init));
   const router = createMemoryRouter([{ path: '/', element: <RecordPage /> }], {
     initialEntries: ['/'],
   });

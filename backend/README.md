@@ -23,6 +23,10 @@
 7. 数据默认位于项目内被 Git 忽略的 `arrive-data/`，不得进入 Git；
 8. 应用 SQLite 文件必须位于数据根的 `database/` 中，来源原文只使用数据根相对键。
 
+## Docker 运行
+
+普通使用者在项目根执行 `docker compose up --build -d --wait`，即可同时启动前后端；无需执行下方 pip 安装。详细步骤与验收限制见 [Docker 运行指南](../docs/Docker运行指南.md)。
+
 ## 本地运行
 
 ```powershell
@@ -54,7 +58,7 @@ python -c "from arrive.config import Settings; print(Settings().data_dir)"
 
 每个克隆默认使用自身的 `arrive-data/`，相互独立；也可通过 `ARRIVE_DATA_DIR` 指定外部数据根。更改环境变量不会迁移旧数据；迁移前停止服务，备份并复制整个数据根（不是只复制一个数据库文件），再切换配置。
 
-Docker Compose 使用独立命名卷挂载到容器 `/data`，不是仓库内目录。停止或重建容器通常保留卷，但 `docker compose down -v` 会删除卷及数据，不要在保留个人数据时使用。备份与恢复应在停止写入后针对完整数据根进行。
+Docker Compose 默认将项目内 `arrive-data/` 挂载到容器 `/data`，停止或重建容器不会删除这个宿主机目录。旧版命名卷不会自动迁移，升级前请按 [Docker 运行指南](../docs/Docker运行指南.md) 备份和迁移完整数据根。
 
 默认仅监听本机；当前没有用户认证和数据加密。目录分开与 Git 忽略是存储和版本管理边界，不等于加密或备份，也不会阻止操作系统云同步、人工复制或未来远程 LLM 调用。使用远程数据库或模型服务须另行确认数据流向。
 

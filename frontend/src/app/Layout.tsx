@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { to: '/', label: '记录', end: true },
   { to: '/materials', label: '素材', end: false },
   { to: '/sources', label: '来源', end: false },
+  { to: '/local-records', label: '本地档案', end: false },
   { to: '/propositions', label: '观点', end: false },
 ];
 

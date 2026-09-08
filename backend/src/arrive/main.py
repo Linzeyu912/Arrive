@@ -24,6 +24,10 @@ def create_app(*, initialize_database: bool = True) -> FastAPI:
     async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
         if initialize_database:
             run_migrations()
+            from .database import SessionLocal
+            from .legacy_import import import_legacy_files
+            with SessionLocal() as session:
+                import_legacy_files(session, settings.data_dir)
         yield
 
     app = FastAPI(

@@ -1,0 +1,3 @@
+# Pin build tools too: Docker installs the project without build isolation.
+setuptools==80.9.0
+wheel==0.45.1

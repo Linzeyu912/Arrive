@@ -69,7 +69,7 @@ def test_create_all_era_database_at_current_schema_is_stamped_at_head(tmp_path):
     url = f"sqlite:///{database.as_posix()}"
 
     legacy_engine = create_engine(url)
-    Base.metadata.create_all(legacy_engine)
+    Base.metadata.create_all(legacy_engine, tables=[t for t in Base.metadata.sorted_tables if t.name != "legacy_documents"])
     legacy_engine.dispose()
 
     run_migrations(url)
@@ -91,7 +91,7 @@ def test_create_all_era_database_at_initial_schema_is_stamped_and_upgraded(tmp_p
     url = f"sqlite:///{database.as_posix()}"
 
     legacy_engine = create_engine(url)
-    Base.metadata.create_all(legacy_engine)
+    Base.metadata.create_all(legacy_engine, tables=[t for t in Base.metadata.sorted_tables if t.name != "legacy_documents"])
     legacy_engine.dispose()
 
     connection = sqlite3.connect(database)

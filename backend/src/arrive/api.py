@@ -41,6 +41,26 @@ from .time_utils import now_in_default_timezone, require_aware
 router = APIRouter()
 
 
+@router.get("/local-records")
+def local_records(session: Session = Depends(get_session)):
+    from sqlalchemy import select
+    from .models import LegacyDocument
+    return [dict(id=row.id, relative_key=row.relative_key, category=row.category,
+                 source_id=row.source_id, status=row.status, note=row.note,
+                 recorded_at=row.recorded_at)
+            for row in session.scalars(select(LegacyDocument).order_by(LegacyDocument.id.desc()))]
+
+
+@router.get("/local-records/{record_id}")
+def local_record(record_id: int, session: Session = Depends(get_session)):
+    from .models import LegacyDocument
+    from .errors import NotFoundError
+    row = session.get(LegacyDocument, record_id)
+    if row is None:
+        raise NotFoundError("local record not found")
+    return dict(id=row.id, content=row.content, sha256=row.sha256)
+
+
 @router.post(
     "/materials", response_model=MaterialRead, status_code=status.HTTP_201_CREATED
 )

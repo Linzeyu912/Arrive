@@ -8,6 +8,7 @@ import SourceDetailPage from '../features/sources/SourceDetailPage';
 import PropositionsPage from '../features/propositions/PropositionsPage';
 import ResponsePage from '../features/responses/ResponsePage';
 import NotFoundPage from './NotFoundPage';
+import LocalRecords from '../features/record/LocalRecords';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <RecordPage /> },
       { path: '/materials', element: <MaterialsPage /> },
+      { path: '/local-records', element: <LocalRecords /> },
       { path: '/materials/:materialId', element: <MaterialDetailPage /> },
       { path: '/sources', element: <SourcesPage /> },
       { path: '/sources/:sourceId', element: <SourceDetailPage /> },

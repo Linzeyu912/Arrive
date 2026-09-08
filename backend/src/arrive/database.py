@@ -74,9 +74,8 @@ def _legacy_bootstrap_revision(
     """Stamp revision for databases created by the retired create_all path.
 
     Such databases carry tables but no alembic_version row. A create_all
-    database always matched the metadata of the code that built it, so the
-    response-events composite index distinguishes the current schema from
-    the initial one.
+    database matched the metadata of the code that built it. The composite
+    index identifies the fixed second revision, not future migration heads.
     """
     inspector = inspect(connection)
     tables = set(inspector.get_table_names())
@@ -87,7 +86,7 @@ def _legacy_bootstrap_revision(
             index["name"] for index in inspector.get_indexes("response_events")
         }
         if "ix_response_events_target_effective" in index_names:
-            return script.get_current_head()
+            return "a1d94c07f2b6"
     return script.get_base()
 
 

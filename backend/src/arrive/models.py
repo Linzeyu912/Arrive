@@ -43,6 +43,22 @@ def enum_type(enum_class):
     )
 
 
+class LegacyDocument(Base):
+    __tablename__ = "legacy_documents"
+    __table_args__ = (UniqueConstraint("relative_key", "sha256"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    relative_key: Mapped[str] = mapped_column(Text)
+    sha256: Mapped[str] = mapped_column(String(64))
+    content: Mapped[str] = mapped_column(Text)
+    category: Mapped[str] = mapped_column(String(40))
+    source_id: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    status: Mapped[str] = mapped_column(String(40))
+    note: Mapped[str] = mapped_column(Text)
+    recorded_at: Mapped[str] = mapped_column(String(40))
+    recorded_at_epoch_ms: Mapped[int] = mapped_column(BigInteger)
+
+
 class Material(Base):
     __tablename__ = "materials"
 
