@@ -6,6 +6,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+# Native runtime libraries used by the local OCR image backend.
+RUN apt-get update && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.lock ./
 RUN python -m pip install --no-cache-dir --require-hashes -r requirements.lock
 

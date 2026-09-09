@@ -67,7 +67,13 @@ Docker Compose 默认将项目内 `arrive-data/` 挂载到容器 `/data`，停�
 - API 文档：`http://127.0.0.1:8000/docs`
 - 健康检查：`http://127.0.0.1:8000/health`
 
-## 测试
+## 录入自动归一化
+
+默认依赖包含 Docling 精简转换模块。服务启动后自动处理数据库中的录入任务，不需要用户选择或执行转换。`POST /materials` 原话保存同时入队；`POST /sources` 自动归档 URL 或既有原件；`POST /source-files?filename=example.pdf&title=Example` 接收文件原始字节并自动登记来源与入队。路径均位于 `/api/v1`。
+
+通过 `GET /documents/{owner_id}` 查询状态，通过 `GET /documents/{owner_id}/{job_id}/markdown` 读取结果。原件先留存，失败保留来源及状态，重启恢复中断任务；每个数据根只运行一个后端进程。完整说明见 [自动录入归一化](../docs/外部作品归档.md)。旧归档 CLI 仅用于维护，不是用户操作步骤。
+
+## 自动化测试
 
 ```powershell
 cd backend

@@ -67,6 +67,8 @@ def create_material(session: Session, payload: MaterialCreate) -> models.Materia
         context=payload.context,
     )
     _assign_public_id(session, material, lambda material_id: f"M{material_id:03d}")
+    from .ingestion import enqueue
+    enqueue(session, material.public_id, 'text', material.content)
     session.commit()
     return material
 
@@ -81,7 +83,7 @@ def create_source(session: Session, payload: SourceCreate) -> models.Source:
         public_id=_pending_id(),
         kind=payload.kind,
         platform=payload.platform,
-        original_url=str(payload.original_url),
+        original_url=str(payload.original_url) if payload.original_url else None,
         canonical_url=str(payload.canonical_url) if payload.canonical_url else None,
         title=payload.title,
         creator=payload.creator,
@@ -101,6 +103,11 @@ def create_source(session: Session, payload: SourceCreate) -> models.Source:
         created_at=exact_iso(created),
     )
     _assign_public_id(session, source, lambda source_id: f"SRC-{source_id:04d}")
+    from .ingestion import enqueue
+    if payload.raw_archive_path:
+        enqueue(session, source.public_id, 'file', payload.raw_archive_path)
+    elif payload.original_url:
+        enqueue(session, source.public_id, 'url', str(payload.original_url))
 
     for ordinal, proposition_payload in enumerate(payload.propositions, start=1):
         session.add(

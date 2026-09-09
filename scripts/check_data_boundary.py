@@ -78,6 +78,7 @@ ALLOWED_ROOT_FILES = {
     "README.md",
     "SECURITY.md",
     "compose.yaml",
+    "启动Arrive.cmd",
     "思考转译协作机制.md",
     "长文写作协作机制.md",
 }

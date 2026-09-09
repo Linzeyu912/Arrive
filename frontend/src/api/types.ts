@@ -80,7 +80,7 @@ export interface Source {
   id: string;
   kind: SourceKind;
   platform: string | null;
-  original_url: string;
+  original_url: string | null;
   canonical_url: string | null;
   title: string;
   creator: string | null;

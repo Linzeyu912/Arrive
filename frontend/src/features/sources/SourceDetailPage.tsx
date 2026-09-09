@@ -54,9 +54,9 @@ export default function SourceDetailPage() {
         <div className="field">
           <dt className="muted small">原始链接</dt>
           <dd style={{ margin: 0, overflowWrap: 'anywhere' }}>
-            <a href={source.original_url} target="_blank" rel="noreferrer noopener">
+            {source.original_url ? <a href={source.original_url} target="_blank" rel="noreferrer noopener">
               {source.original_url}
-            </a>
+            </a> : '本地文件，未提供原始链接'}
           </dd>
         </div>
         {source.platform && (

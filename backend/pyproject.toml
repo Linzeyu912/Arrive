@@ -9,6 +9,9 @@ description = "Backend for the Arrive thought-translation framework"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+  "docling-slim[convert-core,format-pdf-pypdfium2,format-pdf-docling,format-docx,format-pptx,format-xlsx,format-html,format-markdown,feat-ocr-rapidocr,models-local]==2.126.0",
+  "onnxruntime>=1.24,<2",
+  "filelock>=3.20,<4",
   "pyyaml>=6,<7",
   "alembic>=1.18,<2.0",
   "fastapi>=0.136,<1.0",
@@ -18,10 +21,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+documents = [] # Compatibility alias; conversion is now a built-in dependency.
 dev = [
   "httpx>=0.28,<1.0",
   "pytest>=9.0,<10.0",
 ]
+
+[project.scripts]
+arrive-archive = "arrive.document_archive:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

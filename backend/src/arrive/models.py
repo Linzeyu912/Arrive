@@ -82,7 +82,7 @@ class Source(Base):
     public_id: Mapped[str] = mapped_column(String(32), unique=True, index=True)
     kind: Mapped[SourceKind] = mapped_column(enum_type(SourceKind))
     platform: Mapped[str | None] = mapped_column(String(200), nullable=True)
-    original_url: Mapped[str] = mapped_column(Text)
+    original_url: Mapped[str | None] = mapped_column(Text, nullable=True)
     canonical_url: Mapped[str | None] = mapped_column(Text, nullable=True)
     title: Mapped[str] = mapped_column(String(500))
     creator: Mapped[str | None] = mapped_column(String(300), nullable=True)
@@ -186,3 +186,17 @@ class ThoughtMap(Base):
     nodes: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
     edges: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
     created_at: Mapped[str] = mapped_column(String(40))
+
+class DocumentJob(Base):
+    __tablename__ = 'document_jobs'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    owner_id: Mapped[str] = mapped_column(String(32), index=True)
+    input_kind: Mapped[str] = mapped_column(String(16))
+    input_value: Mapped[str] = mapped_column(Text)
+    status: Mapped[str] = mapped_column(String(32), default='pending', index=True)
+    manifest_key: Mapped[str | None] = mapped_column(Text, nullable=True)
+    result_key: Mapped[str | None] = mapped_column(Text, nullable=True)
+    markdown_key: Mapped[str | None] = mapped_column(Text, nullable=True)
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    recorded_at: Mapped[str] = mapped_column(String(40))
+    recorded_at_epoch_ms: Mapped[int] = mapped_column(BigInteger)

@@ -79,6 +79,20 @@ Arrive 以通信中的“编码—传递—解码”过程作为基础设计框�
 
 个人经历和长文是这个项目的第一批验证样本，但不是项目本身。
 
+## 录入后自动转换与留存（Docling）
+
+后端会在录入时自动保存原始内容并创建持久化处理任务：网页来源自动抓取，本地文件自动提取 Markdown，直接输入的文本保存为 Markdown。后台调用 [Docling](https://github.com/docling-project/docling) 的精简 Python 转换模块，不接入其服务或界面，用户无需点击转换按钮。
+
+安装后端即包含转换依赖：`python -m pip install -e ./backend`。原件、Markdown 和定位 JSON 都保存在 Git 忽略的 `ARRIVE_DATA_DIR`；失败不丢弃录入内容，程序重启恢复中断任务。接口、保存结构及限制见 [自动录入归一化指南](./docs/外部作品归档.md)。
+
+验证状态：合成 HTML 已跑通“接口录入 → 自动处理 → Markdown 读取”，中文 Word 转换及纯文本保存已验证。本机文字 PDF 与中文扫描 PDF/OCR 已通过合成样本自动录入验收，包括 Markdown、页码定位和原件校验；此前 DLL 阻塞本次不再复现（BE-010）。复杂版面准确性尚未专项验收；Docker 容器运行待验证。
+
+## Windows 双击启动（本机）
+
+双击项目根目录的 **[启动Arrive.cmd](./启动Arrive.cmd)**。启动器会自动启动前后端并打开浏览器，不需要手动打开两个终端。保留“抵达 · Arrive”小窗口；点击“停止并退出”或关闭该窗口，即可停止本次启动的服务。
+
+本机依赖已经安装。启动器使用 `backend/.venv` 和 `frontend/node_modules`；迁移到新电脑后需先按前后端 README 安装依赖。端口被占用时会显示提示，不会关闭其他程序。日志保存在数据根的 `logs/launcher/`，不会进入 Git。
+
 ## Docker 一键运行
 
 安装并启动 Docker（含 Compose v2）后，无需单独安装 Node、Python 或数据库：

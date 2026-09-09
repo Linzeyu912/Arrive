@@ -73,7 +73,7 @@ class SourcePropositionCreate(StrictModel):
 
 class SourceCreate(StrictModel):
     kind: SourceKind
-    original_url: HttpUrl
+    original_url: HttpUrl | None = None
     title: NonEmptyText
     platform: str | None = None
     canonical_url: HttpUrl | None = None
@@ -90,6 +90,12 @@ class SourceCreate(StrictModel):
     raw_archive_sha256: str | None = Field(default=None, pattern=r"^[A-Fa-f0-9]{64}$")
     raw_archive_bytes: int | None = Field(default=None, ge=0)
     propositions: list[SourcePropositionCreate] = Field(default_factory=list)
+
+    @model_validator(mode='after')
+    def require_source_input(self):
+        if not self.original_url and not self.raw_archive_path:
+            raise ValueError('A source URL or archived file is required')
+        return self
 
     @field_validator("raw_archive_path")
     @classmethod
@@ -125,7 +131,7 @@ class SourceRead(ReadModel):
     id: str = Field(validation_alias="public_id")
     kind: SourceKind
     platform: str | None
-    original_url: str
+    original_url: str | None
     canonical_url: str | None
     title: str
     creator: str | None

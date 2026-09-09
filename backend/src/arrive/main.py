@@ -28,7 +28,14 @@ def create_app(*, initialize_database: bool = True) -> FastAPI:
             from .legacy_import import import_legacy_files
             with SessionLocal() as session:
                 import_legacy_files(session, settings.data_dir)
-        yield
+            from .ingestion import ConversionWorker
+            worker = ConversionWorker(SessionLocal, settings.data_dir)
+            worker.start()
+        try:
+            yield
+        finally:
+            if initialize_database:
+                worker.close()
 
     app = FastAPI(
         title=settings.app_name,

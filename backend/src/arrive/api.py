@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, Query, status, Request, HTTPException
 from pydantic import AfterValidator
 from sqlalchemy.orm import Session
 
@@ -39,6 +39,70 @@ from .time_utils import now_in_default_timezone, require_aware
 
 
 router = APIRouter()
+
+
+@router.post('/source-files', response_model=SourceRead, status_code=201)
+async def ingest_source_file(request: Request, filename: str = Query(min_length=1),
+                             title: str = Query(min_length=1),
+                             session: Session = Depends(get_session)):
+    """The ordinary file intake: archive immediately, conversion is automatic."""
+    from pathlib import Path
+    from uuid import uuid4
+    import hashlib
+    from .config import data_path, get_settings, prepare_data_directory
+    from .document_archive import EXTENSIONS, MAX_BYTES, write_json, stamp
+    suffix = Path(filename).suffix.lower()
+    if suffix not in EXTENSIONS:
+        raise HTTPException(415, 'Unsupported document format')
+    root = prepare_data_directory(get_settings().data_dir)
+    key = f'raw/sources/uploads/{uuid4().hex}/original{suffix}'
+    path = data_path(root, key)
+    path.parent.mkdir(parents=True, exist_ok=False)
+    size, digest = 0, hashlib.sha256()
+    receipt = dict(filename=filename, privacy='private', **stamp())
+    try:
+        with path.open('xb') as out:
+            async for chunk in request.stream():
+                size += len(chunk)
+                if size > MAX_BYTES:
+                    raise HTTPException(413, 'File exceeds 100 MiB')
+                out.write(chunk)
+                digest.update(chunk)
+        if not size:
+            raise HTTPException(422, 'Empty file')
+    except Exception:
+        receipt['status'] = 'incomplete'
+        write_json(root, key + '.receipt.json', receipt)
+        raise
+    receipt.update(status='captured', raw_archive_path=key, raw_archive_bytes=size,
+                   raw_archive_sha256=digest.hexdigest())
+    write_json(root, key + '.receipt.json', receipt)
+    payload = SourceCreate(kind='other', title=title, raw_archive_path=key,
+                           raw_archive_bytes=size, raw_archive_sha256=digest.hexdigest())
+    return SourceRead.model_validate(create_source(session, payload))
+
+
+@router.get('/documents/{owner_id}')
+def get_normalized_documents(owner_id: str, session: Session = Depends(get_session)):
+    from sqlalchemy import select
+    from .models import DocumentJob
+    return [dict(id=j.id, owner_id=j.owner_id, status=j.status,
+                 markdown_key=j.markdown_key, result_key=j.result_key,
+                 error=j.error, recorded_at=j.recorded_at)
+            for j in session.scalars(select(DocumentJob).where(DocumentJob.owner_id == owner_id).order_by(DocumentJob.id))]
+
+
+@router.get('/documents/{owner_id}/{job_id}/markdown')
+def get_normalized_markdown(owner_id: str, job_id: int, session: Session = Depends(get_session)):
+    from .models import DocumentJob
+    from .config import data_path, get_settings
+    from fastapi.responses import PlainTextResponse
+    job = session.get(DocumentJob, job_id)
+    if job is None or job.owner_id != owner_id:
+        raise HTTPException(404, 'Document not found')
+    if not job.markdown_key:
+        raise HTTPException(409, 'Markdown is not available yet')
+    return PlainTextResponse(data_path(get_settings().data_dir, job.markdown_key).read_text(encoding='utf-8'), media_type='text/markdown')
 
 
 @router.get("/local-records")
